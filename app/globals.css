@@ -95,6 +95,12 @@
 
 html { -webkit-text-size-adjust: 100%; }
 
+html, body {
+  /* decorative fixed-px elements (hero fan, glows) must never widen the page */
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -200,7 +206,13 @@ img { display: block; max-width: 100%; }
   box-shadow: 0 6px 24px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.9), inset 0 -1px 0 rgba(0,0,0,.15);
   text-shadow: 0 1px 0 rgba(255,255,255,.4);
 }
-.btn-primary:hover { background-position: 0 70%; box-shadow: 0 10px 36px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.95); }
+/* re-assert background + color: the generic .btn:hover (higher specificity)
+   would otherwise repaint these dark and make the dark label unreadable */
+.btn-primary:hover {
+  background: var(--platinum); background-size: 100% 220%; background-position: 0 70%;
+  color: #1a1326; border-color: transparent;
+  box-shadow: 0 10px 36px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.95);
+}
 
 .btn-holo {
   border: 0; color: #1a1030; position: relative; overflow: hidden;
@@ -208,7 +220,11 @@ img { display: block; max-width: 100%; }
   box-shadow: 0 8px 30px rgba(124,92,255,.4), inset 0 1px 0 rgba(255,255,255,.5);
   animation: holoShift 8s linear infinite;
 }
-.btn-holo:hover { box-shadow: 0 12px 44px rgba(124,92,255,.6); }
+.btn-holo:hover {
+  background: var(--purple-chrome); background-size: 220% 100%;
+  color: #1a1030; border-color: transparent;
+  box-shadow: 0 12px 44px rgba(124,92,255,.6);
+}
 
 .btn-ghost { background: transparent; border-color: var(--border); }
 .btn-ghost:hover { background: var(--surface-2); }
@@ -437,6 +453,9 @@ img { display: block; max-width: 100%; }
 /* chapter numerals */
 .chapter-num {
   font-family: var(--font-title); font-weight: 900; font-size: clamp(42px, 5vw, 66px); line-height: .78;
+  /* tight line-height makes glyphs overshoot the box; background-clip:text
+     only paints inside it — padding extends the paint area so tops aren't cut */
+  padding-top: .16em;
   background: var(--purple-chrome); background-size: 200% 100%;
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   animation: holoShift 9s linear infinite; opacity: .9;
@@ -609,12 +628,16 @@ body::after {
   /* checkout stepper: dots only */
   .hv-step-label { display: none; }
 
-  /* hero card fan: scale the fixed-width stage down to fit */
-  .hv-fan { transform: scale(.8); transform-origin: top center; min-height: 470px !important; }
+  /* compact header: tighter gaps, smaller hit targets, slimmer wordmark */
+  .hv-header-row { gap: 8px !important; height: 58px !important; }
+  .hv-header-row .btn-icon { padding: 8px; }
+  .hv-menu-toggle { padding: 8px 10px; }
+  .chrome-name { font-size: 15px !important; letter-spacing: .14em !important; }
 }
 
-@media (max-width: 400px) {
-  .hv-fan { transform: scale(.68); min-height: 400px !important; }
+@media (max-width: 380px) {
+  /* ultra narrow: icon-only brand */
+  .chrome-name { display: none; }
 }
 
 /* respect users who prefer reduced motion — tone down the flashiest effects

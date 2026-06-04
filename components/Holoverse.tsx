@@ -247,7 +247,7 @@ function Header() {
           <Icon name="truck" size={15} solid /> Envío asegurado gratis +$80.000 · Retiro en Palermo · Preventas abiertas
         </div>
       </div>
-      <div className="wrap" style={{ display: "flex", alignItems: "center", gap: 18, height: 70 }}>
+      <div className="wrap hv-header-row" style={{ display: "flex", alignItems: "center", gap: 18, height: 70 }}>
         <Logo onClick={() => nav("home")} />
         <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
           <button onClick={openSearch} className="hv-search-trigger"
@@ -473,6 +473,8 @@ function HeroCardFan({ cards }) {
   const { nav } = useHV();
   const [focus, setFocus] = useState(Math.floor(cards.length / 2));
   const [paused, setPaused] = useState(false);
+  const [k, setK] = useState(1); // geometry scale: 1 on desktop, shrinks to fit narrow screens
+  const wrapRef = useRef(null);
   const n = cards.length;
   const feat = cards[focus];
   useEffect(() => {
@@ -480,27 +482,37 @@ function HeroCardFan({ cards }) {
     const t = setInterval(() => setFocus((f) => (f + 1) % n), 2300);
     return () => clearInterval(t);
   }, [paused, n]);
+  // the fan geometry is fixed-px; scale every measure to the available width
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const measure = () => setK(Math.min(1, el.offsetWidth / 470));
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    measure();
+    return () => ro.disconnect();
+  }, []);
   return (
     <div
-      className="hv-fan"
+      ref={wrapRef}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      style={{ position: "relative", minHeight: 540, display: "grid", placeItems: "center" }}>
-      <div style={{ position: "absolute", width: 430, height: 430, borderRadius: "50%", background: "var(--purple-grad)", filter: "blur(100px)", opacity: .38 }} />
-      <div style={{ position: "relative", width: 440, height: 480 }}>
+      style={{ position: "relative", minHeight: 540 * k, display: "grid", placeItems: "center", maxWidth: "100%" }}>
+      <div style={{ position: "absolute", width: 430 * k, height: 430 * k, borderRadius: "50%", background: "var(--purple-grad)", filter: "blur(100px)", opacity: .38 }} />
+      <div style={{ position: "relative", width: 440 * k, height: 480 * k }}>
         {cards.map((c, i) => {
           const mid = (n - 1) / 2;
           const off = i - mid;
           const isF = i === focus;
           const rot = off * 12;
-          const tx = off * 68;
-          const ty = Math.abs(off) * 30 - (isF ? 44 : 0);
+          const tx = off * 68 * k;
+          const ty = (Math.abs(off) * 30 - (isF ? 44 : 0)) * k;
           return (
             <div key={c.id}
               onMouseEnter={() => setFocus(i)}
               onClick={() => nav("single", { id: c.id })}
               style={{
-                position: "absolute", left: "50%", top: "50%", width: 222, marginLeft: -111, marginTop: -155,
+                position: "absolute", left: "50%", top: "50%", width: 222 * k, marginLeft: -111 * k, marginTop: -155 * k,
                 transform: `translate(${tx}px, ${ty}px) rotate(${rot}deg) scale(${isF ? 1.16 : 1})`,
                 transformOrigin: "50% 120%", transition: "transform .5s cubic-bezier(.2,.8,.2,1), filter .35s",
                 zIndex: isF ? 30 : 10 - Math.abs(off), cursor: "pointer",
@@ -511,7 +523,7 @@ function HeroCardFan({ cards }) {
           );
         })}
       </div>
-      <div className="panel gloss" style={{ position: "absolute", bottom: 4, left: "50%", transform: "translateX(-50%)", width: 372, padding: "14px 20px", backdropFilter: "blur(10px)", background: "rgba(26,21,41,.86)", borderRadius: 16, display: "flex", justifyContent: "space-between", alignItems: "center", zIndex: 40 }}>
+      <div className="panel gloss" style={{ position: "absolute", bottom: 4, left: "50%", transform: "translateX(-50%)", width: "min(372px, 96%)", padding: "14px 20px", backdropFilter: "blur(10px)", background: "rgba(26,21,41,.86)", borderRadius: 16, display: "flex", justifyContent: "space-between", alignItems: "center", zIndex: 40 }}>
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <GameTag game={feat.game} />
@@ -1458,7 +1470,7 @@ function SearchOverlay({ onClose }) {
   const trending = ["Charizard ex", "Ragavan", "One Piece OP-09", "151 ETB", "Prism Sleeves"];
   const submit = () => { nav("search", { q }); onClose(); };
   return (
-    <div onClick={onClose} style={{ position: "fixed", inset: 0, zIndex: 70, background: "rgba(5,5,9,.7)", backdropFilter: "blur(8px)", paddingTop: "10vh" }}>
+    <div onClick={onClose} style={{ position: "fixed", inset: 0, zIndex: 70, background: "rgba(5,5,9,.7)", backdropFilter: "blur(8px)", padding: "10vh 14px 0" }}>
       <div onClick={(e) => e.stopPropagation()} className="panel fade-up" style={{ maxWidth: 640, margin: "0 auto", overflow: "hidden", boxShadow: "var(--shadow-lg)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "18px 20px", borderBottom: "1px solid var(--border)" }}>
           <Icon name="search" size={20} style={{ color: "var(--text-3)" }} />
