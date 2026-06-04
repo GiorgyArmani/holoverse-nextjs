@@ -1,0 +1,627 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   HOLOVERSE — TCG storefront design system
+   Dark · glossy · holographic. MTG / Pokémon / One Piece.
+   ============================================================ */
+
+:root {
+  /* --- surfaces (deep arcane plum-black, layered) --- */
+  --bg:        #0a0712;
+  --bg-grad-1: #120c20;
+  --bg-grad-2: #08050f;
+  --surface:   #14101f;
+  --surface-2: #1a1529;
+  --surface-3: #221b34;
+  --surface-hi:#2c2440;
+
+  /* --- hairlines & strokes (silver-tinted) --- */
+  --border:        rgba(214,210,235,0.10);
+  --border-strong: rgba(214,210,235,0.18);
+  --border-glow:   rgba(166,139,255,0.5);
+
+  /* --- text --- */
+  --text:   #f3f1fa;
+  --text-2: #bcb6d2;
+  --text-3: #837c9c;
+  --text-4: #574e6e;
+
+  /* --- accents: purple + silver/platinum --- */
+  --violet: #a68bff;
+  --violet-deep: #7c5cff;
+  --cyan:   #c8d2ff;   /* cool silver-blue */
+  --pink:   #c9a9ff;   /* lilac */
+  --gold:   #d8d8ea;   /* repurposed as silver */
+  --silver: #d9d7ea;
+  --mint:   #b8b4d8;
+
+  --accent:      var(--violet);
+  --accent-soft: rgba(166,139,255,0.16);
+
+  /* --- metallic chrome / platinum --- */
+  --chrome: linear-gradient(160deg, #fbfbff 0%, #d2d1e2 16%, #a7a4ba 34%, #f3f1fa 50%, #c0bdd2 66%, #9d9ab0 82%, #eceaf4 100%);
+  --platinum: linear-gradient(180deg, #f0f0f7 0%, #cdccdb 44%, #a4a2b8 56%, #e8e7f0 100%);
+  --purple-grad: linear-gradient(135deg, #b9a3ff 0%, #8b6cff 48%, #6a47d6 100%);
+  --purple-chrome: linear-gradient(150deg, #efeaff 0%, #b9a8e8 22%, #8a78c4 44%, #efeaff 56%, #a994dd 74%, #7c66b8 100%);
+
+  /* --- holographic rainbow foil (reserved for cards) --- */
+  --holo: linear-gradient(115deg, #c8d2ff 0%, #a68bff 26%, #d9b8ff 50%, #c9a9ff 74%, #e8e6f6 100%);
+  --holo-soft: linear-gradient(115deg, rgba(166,139,255,.22), rgba(201,169,255,.22) 50%, rgba(217,215,234,.22));
+  /* sunpillar rainbow for foil shine */
+  --sp1: hsl(2,100%,73%);
+  --sp2: hsl(53,100%,69%);
+  --sp3: hsl(93,100%,69%);
+  --sp4: hsl(176,100%,76%);
+  --sp5: hsl(258,100%,80%);
+  --sp6: hsl(290,100%,76%);
+
+  /* --- game hues --- */
+  --g-mtg:  #f0a35e;
+  --g-poke: #ffd23f;
+  --g-op:   #ff5d5d;
+
+  /* --- status --- */
+  --good: #54d6a2;
+  --warn: #ffce6b;
+  --bad:  #ff6b7d;
+
+  /* --- radius --- */
+  --r-sm: 8px;
+  --r:    14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-pill: 999px;
+
+  /* --- shadow / glow --- */
+  --shadow-sm: 0 2px 8px rgba(0,0,0,.4);
+  --shadow:    0 12px 40px rgba(0,0,0,.5);
+  --shadow-lg: 0 30px 80px rgba(0,0,0,.6);
+  --glow-violet: 0 0 0 1px rgba(166,139,255,.4), 0 8px 40px rgba(166,139,255,.32);
+
+  /* fonts (next/font variables with raw-name fallbacks) */
+  --font-title: var(--font-cinzel, 'Cinzel'), 'Cormorant Garamond', Georgia, serif;
+  --font-display: var(--font-grotesk, 'Space Grotesk'), system-ui, sans-serif;
+  --font-body: var(--font-manrope, 'Manrope'), system-ui, sans-serif;
+
+  /* silver-chrome title fill (Final Fantasy) */
+  --silver-chrome: linear-gradient(180deg, #ffffff 0%, #eceaf4 26%, #b7b4cb 50%, #f4f2fb 62%, #c4c1d6 82%, #e9e7f2 100%);
+
+  --maxw: 1320px;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background:
+    radial-gradient(1100px 680px at 82% -10%, rgba(166,139,255,0.16), transparent 60%),
+    radial-gradient(900px 620px at 6% 4%, rgba(124,92,255,0.12), transparent 55%),
+    radial-gradient(700px 700px at 50% 110%, rgba(150,140,200,0.07), transparent 60%),
+    linear-gradient(180deg, var(--bg-grad-1), var(--bg-grad-2));
+  background-attachment: fixed;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  position: relative;
+}
+/* fine arcane grain texture over everything */
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+  opacity: 0.05; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+h1,h2,h3,h4,h5 { font-family: var(--font-title); margin: 0; font-weight: 700; letter-spacing: .01em; line-height: 1.08; }
+/* silver-chrome fill on the big titles — FF style */
+h1, h2 {
+  background: var(--silver-chrome); background-size: 100% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.5)) drop-shadow(0 0 18px rgba(166,139,255,.12));
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+img { display: block; max-width: 100%; }
+::selection { background: rgba(166,139,255,.42); color: #fff; }
+
+/* slim scrollbars */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 99px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--surface-hi); background-clip: padding-box; }
+
+/* ---------- layout ---------- */
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+@media (max-width: 640px){ .wrap { padding: 0 16px; } }
+
+.hv-app { min-height: 100vh; display: flex; flex-direction: column; }
+.hv-main { flex: 1; }
+
+/* ---------- metallic + holographic text ---------- */
+.holo-text, .chrome-text {
+  background: var(--purple-chrome);
+  background-size: 220% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: holoShift 9s linear infinite;
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,.12));
+}
+.platinum-text {
+  background: var(--chrome);
+  background-size: 220% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  animation: holoShift 9s linear infinite;
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,.3)) drop-shadow(0 2px 7px rgba(0,0,0,.45));
+}
+/* metallic icons: default stroke is the chrome gradient (#ic-chrome).
+   Revert to currentColor where an icon sits on a light/metallic surface. */
+.btn-primary svg, .btn-holo svg, .badge-holo svg, .hv-announce svg { stroke: currentColor !important; }
+
+/* uniform vertical chrome for the wordmark — every letter reads crisp */
+.chrome-name {
+  font-family: var(--font-title);
+  background: linear-gradient(180deg, #ffffff 0%, #ecebf4 28%, #b9b7ca 50%, #f4f2fb 64%, #c6c4d8 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.55));
+}
+@keyframes holoShift { to { background-position: 220% 0; } }
+
+.holo-rule {
+  height: 1px; border: 0;
+  background: var(--holo); opacity: .5;
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text);
+  padding: 11px 18px; border-radius: 11px;
+  font-weight: 600; font-size: 14px; letter-spacing: .01em;
+  transition: transform .15s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+  white-space: nowrap;
+}
+.btn:hover { transform: translateY(-1px); border-color: var(--border-glow); background: var(--surface-3); }
+.btn:active { transform: translateY(0); }
+
+.btn-primary {
+  border: 0; color: #1a1326; position: relative; overflow: hidden;
+  background: var(--platinum); background-size: 100% 220%; background-position: 0 30%;
+  box-shadow: 0 6px 24px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.9), inset 0 -1px 0 rgba(0,0,0,.15);
+  text-shadow: 0 1px 0 rgba(255,255,255,.4);
+}
+.btn-primary:hover { background-position: 0 70%; box-shadow: 0 10px 36px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.95); }
+
+.btn-holo {
+  border: 0; color: #1a1030; position: relative; overflow: hidden;
+  background: var(--purple-chrome); background-size: 220% 100%;
+  box-shadow: 0 8px 30px rgba(124,92,255,.4), inset 0 1px 0 rgba(255,255,255,.5);
+  animation: holoShift 8s linear infinite;
+}
+.btn-holo:hover { box-shadow: 0 12px 44px rgba(124,92,255,.6); }
+
+.btn-ghost { background: transparent; border-color: var(--border); }
+.btn-ghost:hover { background: var(--surface-2); }
+
+.btn-block { width: 100%; justify-content: center; }
+.btn-lg { padding: 15px 26px; font-size: 15px; }
+.btn-sm { padding: 8px 13px; font-size: 13px; }
+.btn-icon { padding: 11px; border-radius: 11px; }
+
+/* ---------- badges & chips ---------- */
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  padding: 5px 10px; border-radius: var(--r-pill);
+  border: 1px solid var(--border); color: var(--text-2);
+  background: rgba(255,255,255,.03);
+  font-family: var(--font-display);
+  white-space: nowrap;
+}
+.badge-holo { border: 0; color: #1a1030; background: var(--purple-chrome); background-size: 220% 100%; animation: holoShift 8s linear infinite; box-shadow: inset 0 1px 0 rgba(255,255,255,.5); }
+.badge-preorder { color: #c8d2ff; border-color: rgba(200,210,255,.42); background: rgba(200,210,255,.08); }
+.badge-hot { color: #c9a9ff; border-color: rgba(201,169,255,.42); background: rgba(201,169,255,.08); }
+.badge-new { color: #e2e0ee; border-color: rgba(226,224,238,.42); background: rgba(226,224,238,.07); }
+.badge-low { color: var(--violet); border-color: rgba(166,139,255,.45); background: rgba(166,139,255,.10); }
+
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+/* game tag */
+.gtag { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; color: var(--text-2); font-family: var(--font-display); letter-spacing: .02em; }
+.gtag .dot-mtg  { background: var(--g-mtg); box-shadow: 0 0 10px var(--g-mtg); }
+.gtag .dot-poke { background: var(--g-poke); box-shadow: 0 0 10px var(--g-poke); }
+.gtag .dot-op   { background: var(--g-op); box-shadow: 0 0 10px var(--g-op); }
+
+/* ---------- card surface ---------- */
+.panel {
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+.panel-pad { padding: 22px; }
+
+/* glossy sheen overlay used on hero / featured */
+.gloss::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.07), transparent 30%);
+}
+
+/* ---------- the trading-card placeholder ---------- */
+.tcard {
+  position: relative; aspect-ratio: 5/7; border-radius: 12px; overflow: hidden;
+  background:
+    linear-gradient(160deg, var(--surface-3), var(--surface));
+  border: 1px solid var(--border);
+  isolation: isolate;
+}
+.tcard .tcard-art {
+  position: absolute; inset: 7px 7px 38% 7px; border-radius: 7px; overflow: hidden;
+  background:
+    repeating-linear-gradient(135deg, rgba(230,228,245,.05) 0 9px, transparent 9px 18px),
+    radial-gradient(120% 100% at 30% 10%, rgba(166,139,255,.4), transparent 60%),
+    linear-gradient(160deg, #241e36, #14101f);
+}
+.tcard .tcard-sym {
+  position: absolute; left: 50%; top: 26%; transform: translate(-50%,-50%);
+  width: 34%; aspect-ratio: 1; border-radius: 50%;
+  background: var(--holo-soft);
+  border: 1px solid var(--border-strong);
+  display: grid; place-items: center;
+}
+.tcard .tcard-meta { position: absolute; left: 9px; right: 9px; bottom: 9px; }
+.tcard .tcard-name { font-family: var(--font-display); font-weight: 600; font-size: clamp(9px, 1.1vw, 13px); line-height: 1.05; }
+.tcard .tcard-sub { font-size: 9px; color: var(--text-3); margin-top: 3px; font-family: var(--font-display); letter-spacing: .04em; }
+.tcard .tcard-mono { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 8px; color: var(--text-4); position: absolute; top: 9px; left: 10px; letter-spacing: .04em; }
+/* real card scan: full-bleed inside the frame (5/7 ≈ real 63×88mm) */
+.tcard .tcard-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; user-select: none; }
+
+/* subtle foil shimmer at rest (purple/silver) */
+.tcard.foil::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: color-dodge;
+  background: linear-gradient(115deg, transparent 32%, rgba(200,210,255,.45) 44%, rgba(201,169,255,.5) 50%, rgba(230,228,245,.45) 56%, transparent 68%);
+  background-size: 250% 250%;
+  animation: foilSweep 5s ease-in-out infinite;
+  opacity: .55;
+}
+@keyframes foilSweep { 0%{background-position:0% 0%;} 50%{background-position:100% 100%;} 100%{background-position:0% 0%;} }
+
+/* rarity ring */
+.rar { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.rar-common { color: var(--text-3); }
+.rar-uncommon { color: var(--cyan); }
+.rar-rare { color: var(--gold); }
+.rar-mythic { background: var(--purple-chrome); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; animation: holoShift 9s linear infinite; }
+
+/* ---------- inputs ---------- */
+.input {
+  width: 100%; background: var(--surface-2); border: 1px solid var(--border);
+  color: var(--text); border-radius: var(--r); padding: 12px 14px; font-size: 14px; font-family: inherit;
+  transition: border-color .2s, box-shadow .2s;
+}
+.input:focus { outline: none; border-color: var(--border-glow); box-shadow: 0 0 0 3px rgba(166,139,255,.16); }
+.input::placeholder { color: var(--text-4); }
+
+/* ---------- utility ---------- */
+.eyebrow { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--text-3); }
+.muted { color: var(--text-3); }
+.divider { height: 1px; background: var(--border); border: 0; }
+/* transform-only entrance: content stays visible even if the animation
+   timeline is paused (preview iframes freeze CSS animations at t=0). */
+.fade-up { animation: fadeUp .6s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes fadeUp { from { transform: translateY(12px); } to { transform: none; } }
+.spin { animation: spin360 1s linear infinite; }
+@keyframes spin360 { to { transform: rotate(360deg); } }
+
+/* price */
+.price-ars { font-family: var(--font-display); font-weight: 700; }
+.price-usd { color: var(--text-3); font-size: .82em; }
+
+/* ============================================================
+   Holographic tilt card — magical TCG foil (pointer-driven)
+   ============================================================ */
+.holo-tilt {
+  position: relative;
+  transform: perspective(800px) rotateX(0deg) rotateY(0deg);
+  transition: transform .55s cubic-bezier(.2,.7,.2,1), box-shadow .4s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.holo-tilt.is-hover {
+  transition: transform .06s ease-out, box-shadow .3s ease;
+  transform: perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+}
+.holo-inner { position: relative; border-radius: inherit; }
+/* platinum/chrome frame edge that catches the light */
+.holo-tilt .holo-inner::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 6;
+  padding: 1px;
+  background: linear-gradient(var(--rx,0deg) , rgba(245,244,252,.0), rgba(220,218,238,.5), rgba(150,146,175,.0));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0; transition: opacity .35s ease;
+}
+.holo-tilt.is-hover .holo-inner::after { opacity: .9; }
+
+.holo-layer { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .35s ease; z-index: 5; }
+.holo-tilt.is-hover .holo-shine { opacity: .55; }
+.holo-tilt.is-hover .holo-glare { opacity: .75; }
+
+/* rainbow oil-slick foil — screen blend stays visible on dark cards, bands shift with cursor */
+.holo-shine {
+  opacity: .14;
+  mix-blend-mode: screen;
+  background-image:
+    repeating-linear-gradient(115deg,
+      var(--sp1) 0%, var(--sp2) 15%, var(--sp3) 30%, var(--sp4) 48%,
+      var(--sp5) 65%, var(--sp6) 82%, var(--sp1) 100%),
+    repeating-linear-gradient(50deg,
+      rgba(255,255,255,.12) 0 2%, transparent 2% 6%);
+  background-blend-mode: overlay;
+  background-size: 230% 230%, 100% 100%;
+  background-position: var(--px,50%) var(--py,50%), center;
+  filter: saturate(1.5) brightness(.8) contrast(1.15);
+}
+/* bright specular glint that follows the cursor */
+.holo-glare {
+  mix-blend-mode: screen;
+  background: radial-gradient(circle at var(--px,50%) var(--py,50%),
+    rgba(255,255,255,.85) 0%, rgba(214,205,255,.35) 18%, rgba(150,130,220,.12) 38%, transparent 60%);
+}
+
+/* ============================================================
+   Staggered full-screen menu
+   ============================================================ */
+.sm-root { position: fixed; inset: 0; z-index: 120; pointer-events: none; }
+.sm-root.sm-open { pointer-events: auto; }
+.sm-scrim { position: absolute; inset: 0; background: rgba(6,4,12,.5); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); opacity: 0; transition: opacity .45s ease; }
+.sm-root.sm-open .sm-scrim { opacity: 1; }
+.sm-prelayer, .sm-panel { position: absolute; top: 0; right: 0; height: 100%; width: clamp(300px, 42vw, 480px); transform: translateX(105%); }
+.sm-prelayer { transition: transform .5s cubic-bezier(.7,0,.3,1); }
+.sm-p1 { background: linear-gradient(180deg, #6a47d6, #8b6cff); z-index: 121; }
+.sm-p2 { background: linear-gradient(180deg, #2a1b4d, #1a1030); z-index: 122; transition-delay: .08s; }
+.sm-panel { z-index: 123; background: linear-gradient(180deg, #15111f, #0c0916); border-left: 1px solid var(--border-strong); display: flex; flex-direction: column; padding: 116px 46px 44px; overflow-y: auto; transition: transform .6s cubic-bezier(.7,0,.3,1) .1s; box-shadow: -50px 0 90px rgba(0,0,0,.55); }
+.sm-root.sm-open .sm-prelayer, .sm-root.sm-open .sm-panel { transform: translateX(0); }
+.sm-eyebrow { font-family: var(--font-display); font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--text-3); margin-bottom: 26px; }
+.sm-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.sm-li { overflow: hidden; }
+.sm-item { display: flex; align-items: baseline; gap: 16px; width: 100%; background: transparent; border: 0; padding: 5px 0; cursor: pointer; text-align: left; transform: translateY(120%); opacity: 0; transition: transform .7s cubic-bezier(.2,.7,.2,1), opacity .5s ease; }
+.sm-root.sm-open .sm-item { transform: translateY(0); opacity: 1; }
+.sm-num { font-family: ui-monospace, monospace; font-size: 13px; color: var(--violet); }
+.sm-label { font-family: var(--font-title); font-weight: 700; font-size: clamp(34px, 5vw, 54px); letter-spacing: -.02em; text-transform: uppercase; line-height: 1.06; color: var(--text); }
+.sm-item:hover .sm-label { background: var(--purple-chrome); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: holoShift 4s linear infinite; }
+.sm-socials { margin-top: auto; padding-top: 34px; }
+.sm-socials-title { font-family: var(--font-display); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--violet); margin-bottom: 14px; }
+.sm-socials-row { display: flex; gap: 22px; flex-wrap: wrap; }
+.sm-soc { font-size: 14px; color: var(--text-2); font-weight: 600; }
+.sm-soc:hover { color: var(--text); }
+@media (max-width: 640px) { .sm-prelayer, .sm-panel { width: 100%; } }
+
+/* hamburger toggle in header */
+.hv-menu-toggle { display: inline-flex; align-items: center; gap: 9px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text); padding: 9px 14px 9px 12px; border-radius: 11px; cursor: pointer; font-family: var(--font-display); font-weight: 600; font-size: 13px; transition: border-color .2s, background .2s; }
+.hv-menu-toggle:hover { border-color: var(--border-glow); background: var(--surface-3); }
+.hv-burger { position: relative; width: 16px; height: 12px; display: inline-block; }
+.hv-burger i { position: absolute; left: 0; width: 100%; height: 2px; border-radius: 2px; background: linear-gradient(90deg, #f3f1fa, #b9b7cc); transition: transform .3s ease, opacity .2s ease; }
+.hv-burger i:nth-child(1) { top: 1px; }
+.hv-burger i:nth-child(2) { bottom: 1px; }
+.hv-burger.open i:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+.hv-burger.open i:nth-child(2) { transform: translateY(-5px) rotate(-45deg); }
+
+/* ============================================================
+   Section bands — make landing sections stand out from each other
+   ============================================================ */
+.band { position: relative; width: 100%; }
+.band-edge { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.band-violet { background: linear-gradient(180deg, rgba(124,92,255,.10), rgba(20,16,41,.55) 50%, rgba(124,92,255,.06)); }
+.band-deep { background: linear-gradient(180deg, rgba(8,5,15,.0), rgba(8,5,15,.6) 50%, rgba(8,5,15,0)); }
+.band-glowtop::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--holo); opacity: .5; }
+
+/* ============================================================
+   RPG flavor — loot, chapters, realms, HUD, quests, vignette
+   ============================================================ */
+/* loot rarity glow around fanned/hero cards */
+.loot { position: relative; border-radius: 13px; }
+.loot-mythic { box-shadow: 0 0 0 1.5px rgba(166,139,255,.6), 0 0 30px rgba(124,92,255,.5); border-radius: 13px; }
+.loot-rare { box-shadow: 0 0 0 1px rgba(201,169,255,.45), 0 0 20px rgba(124,92,255,.3); border-radius: 13px; }
+.loot-uncommon { box-shadow: 0 0 0 1px rgba(200,210,255,.32); border-radius: 13px; }
+
+/* chapter numerals */
+.chapter-num {
+  font-family: var(--font-title); font-weight: 900; font-size: clamp(42px, 5vw, 66px); line-height: .78;
+  background: var(--purple-chrome); background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  animation: holoShift 9s linear infinite; opacity: .9;
+}
+
+/* HUD chips */
+.hud-chip {
+  display: inline-flex; align-items: center; gap: 9px;
+  background: rgba(20,16,31,.6); border: 1px solid var(--border); border-radius: 11px;
+  padding: 9px 13px; font-size: 12.5px; font-weight: 600; color: var(--text-2);
+  font-family: var(--font-display); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+
+/* realm tiles (choose your world) */
+.realm-tile {
+  position: relative; overflow: hidden; text-align: left; padding: 26px; cursor: pointer;
+  border-radius: var(--r-lg); border: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
+  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+}
+.realm-tile:hover { transform: translateY(-4px); border-color: var(--border-strong); box-shadow: 0 18px 54px rgba(0,0,0,.5); }
+.realm-glow { position: absolute; top: -42px; right: -32px; width: 190px; height: 190px; border-radius: 50%; filter: blur(62px); opacity: .2; transition: opacity .3s ease; }
+.realm-tile:hover .realm-glow { opacity: .42; }
+.realm-crest {
+  width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center; margin-bottom: 52px;
+  background: linear-gradient(180deg, rgba(255,255,255,.07), transparent); border: 1px solid var(--border-strong);
+  box-shadow: inset 0 0 18px rgba(0,0,0,.45);
+}
+.realm-crest > span { width: 16px; height: 16px; border-radius: 50% 50% 50% 0; transform: rotate(45deg); background: var(--realm); box-shadow: 0 0 16px var(--realm); }
+.realm-realm { font-family: var(--font-display); font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--realm); font-weight: 700; }
+.realm-enter { display: inline-flex; align-items: center; gap: 7px; margin-top: 18px; font-family: var(--font-display); font-weight: 700; font-size: 13.5px; color: var(--text-2); transition: color .2s; }
+.realm-tile:hover .realm-enter { color: var(--text); }
+
+/* quest tag */
+.quest-tag {
+  display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-weight: 800;
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #1a1030;
+  background: var(--holo); background-size: 200% 100%; animation: holoShift 7s linear infinite;
+  padding: 5px 11px; border-radius: 999px;
+}
+
+/* cinematic vignette for game ambiance */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+  background: radial-gradient(125% 95% at 50% 38%, transparent 56%, rgba(4,2,10,.55) 100%);
+}
+
+/* ============================================================
+   Prisma — the holographic familiar (mascot)
+   ============================================================ */
+.prisma-wrap { position: fixed; left: 22px; bottom: 22px; z-index: 50; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.prisma-sprite { position: relative; width: 124px; height: 112px; cursor: pointer; animation: prismaWander 7s ease-in-out infinite, pfShimmer 9s ease-in-out infinite; }
+.prisma-sprite:focus-visible { outline: 2px solid var(--border-glow); outline-offset: 6px; border-radius: 50%; }
+@keyframes prismaWander {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(7px, -9px); }
+  45% { transform: translate(-5px, -14px); }
+  68% { transform: translate(-8px, -4px); }
+  85% { transform: translate(4px, -7px); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes pfShimmer { 0%,100% { filter: hue-rotate(0deg); } 50% { filter: hue-rotate(26deg); } }
+
+/* glowing core + halo */
+.pf-halo { position: absolute; left: 50%; top: 50%; width: 86px; height: 86px; margin: -43px 0 0 -43px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(127,214,255,.5) 0%, rgba(139,125,255,.28) 42%, transparent 70%); filter: blur(6px); z-index: 1;
+  animation: pfPulse 2.4s ease-in-out infinite reverse; }
+.pf-core { position: absolute; left: 50%; top: 50%; width: 38px; height: 38px; margin: -19px 0 0 -19px; border-radius: 50%;
+  background: radial-gradient(circle at 50% 42%, #ffffff 0%, #d8f4ff 22%, #7fd6ff 46%, #8b7dff 74%, rgba(124,92,255,0) 100%);
+  box-shadow: 0 0 22px 6px rgba(127,214,255,.85), 0 0 48px 14px rgba(139,125,255,.6); z-index: 3;
+  animation: pfBreathe 2.1s ease-in-out infinite; }
+@keyframes pfPulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.14); opacity: .85; } }
+@keyframes pfBreathe {
+  0%,100% { transform: scale(1); box-shadow: 0 0 22px 6px rgba(127,214,255,.85), 0 0 48px 14px rgba(139,125,255,.6); }
+  45% { transform: scale(1.2); box-shadow: 0 0 30px 9px rgba(127,214,255,1), 0 0 62px 20px rgba(139,125,255,.75); }
+  72% { transform: scale(1.05); }
+}
+
+/* translucent feather wings, fanned around the core */
+.pf-wing { position: absolute; left: 50%; top: 50%; margin-top: -11px; width: 46px; height: 22px; z-index: 2; transform-origin: 0% 50%; opacity: .92;
+  background: linear-gradient(90deg, rgba(255,255,255,.95), rgba(214,240,255,.42) 64%, transparent);
+  border-radius: 50% 85% 60% 90% / 72% 92% 28% 50%; box-shadow: 0 0 10px rgba(180,225,255,.5); }
+.pf-w1 { animation: pfFlapUL 2.5s ease-in-out infinite; }
+.pf-w2 { animation: pfFlapUR 2.5s ease-in-out infinite; }
+.pf-w3 { width: 40px; animation: pfFlapLL 2.9s ease-in-out infinite; }
+.pf-w4 { width: 40px; animation: pfFlapLR 2.9s ease-in-out infinite; }
+@keyframes pfFlapUL { 0%,100% { transform: rotate(-150deg) scaleY(1); filter: brightness(1); } 50% { transform: rotate(-158deg) scaleY(.72); filter: brightness(1.35); } }
+@keyframes pfFlapUR { 0%,100% { transform: rotate(-30deg) scaleY(1); filter: brightness(1); } 50% { transform: rotate(-22deg) scaleY(.72); filter: brightness(1.35); } }
+@keyframes pfFlapLL { 0%,100% { transform: rotate(150deg) scaleY(1); filter: brightness(1); } 50% { transform: rotate(158deg) scaleY(.72); filter: brightness(1.35); } }
+@keyframes pfFlapLR { 0%,100% { transform: rotate(30deg) scaleY(1); filter: brightness(1); } 50% { transform: rotate(22deg) scaleY(.72); filter: brightness(1.35); } }
+
+/* trailing sparkles */
+.pf-spark { position: absolute; border-radius: 50%; background: radial-gradient(circle, #fff, #7fd6ff 60%, transparent); box-shadow: 0 0 8px rgba(127,214,255,.9); animation: pfTwinkle 2.6s ease-in-out infinite; }
+.pf-s1 { width: 8px; height: 8px; left: 40px; bottom: 6px; animation-delay: 0s; }
+.pf-s2 { width: 6px; height: 6px; left: 58px; bottom: 0; animation-delay: .5s; }
+.pf-s3 { width: 5px; height: 5px; left: 70px; bottom: 12px; animation-delay: 1s; }
+@keyframes pfTwinkle { 0%,100% { opacity: .3; transform: scale(.7); } 50% { opacity: 1; transform: scale(1); } }
+
+/* stardust trail left while it drifts */
+.pf-trail { position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; z-index: 0;
+  background: radial-gradient(circle, #fff, #7fd6ff 55%, transparent); box-shadow: 0 0 8px rgba(127,214,255,.85); opacity: 0;
+  animation: pfTrail 2.8s ease-in infinite; }
+.pf-t1 { --tx: -12px; animation-delay: 0s; }
+.pf-t2 { --tx: 9px;  animation-delay: .7s; }
+.pf-t3 { --tx: -4px; animation-delay: 1.4s; }
+.pf-t4 { --tx: 14px; animation-delay: 2.1s; }
+@keyframes pfTrail { 0% { opacity: 0; transform: translate(0,0) scale(.4); } 14% { opacity: 1; } 100% { opacity: 0; transform: translate(var(--tx,-10px), 34px) scale(.2); } }
+
+/* reacts when you hover: faster flap + brighter glow */
+.prisma-sprite:hover .pf-core { animation-duration: 1s; filter: brightness(1.3); }
+.prisma-sprite:hover .pf-halo { filter: blur(6px) brightness(1.5); }
+.prisma-sprite:hover .pf-w1, .prisma-sprite:hover .pf-w2 { animation-duration: 1.05s; }
+.prisma-sprite:hover .pf-w3, .prisma-sprite:hover .pf-w4 { animation-duration: 1.25s; }
+.prisma-sprite:hover .pf-trail { animation-duration: 1.5s; }
+.prisma-sprite:hover .pf-spark { animation-duration: 1.4s; }
+
+/* greeting: flies in with a little overshoot on first load */
+.prisma-wrap { animation: pfEnter 1.15s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes pfEnter {
+  0% { transform: translateY(46px) scale(.5); opacity: 0; }
+  55% { opacity: 1; transform: translateY(-8px) scale(1.1); }
+  78% { transform: translateY(2px) scale(.97); }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+.prisma-bubble { position: relative; background: linear-gradient(180deg, var(--surface-2), var(--surface)); border: 1px solid var(--border-strong); border-radius: 14px; padding: 13px 15px; width: 224px; box-shadow: var(--shadow); }
+.prisma-bubble::after { content: ""; position: absolute; left: 28px; bottom: -7px; width: 13px; height: 13px; background: var(--surface); border-right: 1px solid var(--border-strong); border-bottom: 1px solid var(--border-strong); transform: rotate(45deg); }
+.prisma-x { position: absolute; top: 7px; right: 7px; background: transparent; border: 0; color: var(--text-3); cursor: pointer; display: grid; place-items: center; }
+.prisma-name { font-family: var(--font-title); font-weight: 700; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; background: var(--purple-chrome); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 5px; animation: holoShift 8s linear infinite; }
+.prisma-msg { font-size: 13px; color: var(--text-2); line-height: 1.45; margin-bottom: 11px; min-height: 36px; }
+.prisma-cta { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 700; font-family: var(--font-display); color: #1a1030; background: var(--holo); background-size: 200% 100%; animation: holoShift 7s linear infinite; border: 0; border-radius: 9px; padding: 7px 11px; cursor: pointer; }
+@media (max-width: 640px) { .prisma-wrap { left: 14px; bottom: 14px; } .prisma-bubble { width: 196px; } .prisma-sprite { width: 84px; height: 100px; } }
+
+/* ============================================================
+   Responsive — tablet & mobile
+   (components set desktop grids inline; these hooks override them)
+   ============================================================ */
+/* hide mobile-only controls on desktop is handled inline; reveal them below */
+
+@media (max-width: 1100px) {
+  .hv-rail, .hv-browse-grid { grid-template-columns: repeat(3, 1fr) !important; }
+  .hv-acc-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .hv-footer-grid { grid-template-columns: 1fr 1fr !important; }
+}
+
+@media (max-width: 940px) {
+  /* hero stacks; PDP, checkout and account grids collapse to one column */
+  .hv-hero-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+  .hv-pdp-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .hv-pdp-media { position: static !important; }
+  .hv-checkout-grid { grid-template-columns: 1fr !important; }
+  .hv-tiles { grid-template-columns: 1fr 1fr !important; }
+
+  /* desktop filter sidebar hides; the toolbar button + drawer take over */
+  .hv-filters { display: none; }
+  .hv-mobile-filter-btn { display: inline-flex !important; }
+}
+
+@media (max-width: 640px) {
+  .hv-rail, .hv-browse-grid, .hv-acc-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+  .hv-tiles { grid-template-columns: 1fr !important; }
+  .hv-footer-grid { grid-template-columns: 1fr !important; gap: 30px !important; }
+  .hv-sellcta { grid-template-columns: 1fr !important; padding: 30px 22px !important; }
+
+  /* header: swap the wide search trigger for the compact icon */
+  .hv-search-trigger { display: none !important; }
+  [data-mobile-search] { display: inline-flex !important; }
+  .hv-menu-label { display: none; }
+  .hv-announce { font-size: 11px !important; padding: 6px 12px !important; text-align: center; }
+
+  /* checkout stepper: dots only */
+  .hv-step-label { display: none; }
+
+  /* hero card fan: scale the fixed-width stage down to fit */
+  .hv-fan { transform: scale(.8); transform-origin: top center; min-height: 470px !important; }
+}
+
+@media (max-width: 400px) {
+  .hv-fan { transform: scale(.68); min-height: 400px !important; }
+}
+
+/* respect users who prefer reduced motion — tone down the flashiest effects
+   only; ambient brand animation (Prisma, gradient shimmer) stays alive */
+@media (prefers-reduced-motion: reduce) {
+  .fade-up { animation: none; }
+  .holo-tilt, .holo-tilt.is-hover { transition: none; transform: none; }
+  .tcard.foil::after { animation: none; opacity: .3; }
+  .prisma-wrap { animation: none; } /* skip only the fly-in entrance */
+}
