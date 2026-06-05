@@ -4,7 +4,7 @@ import React from "react";
 /* Holoverse — holographic tilt card (magical TCG foil).
    Adapts the React-Bits ProfileCard shine/glare/tilt to vanilla inline styles.
    Pointer drives CSS vars --px/--py (glare + rainbow position) and --rx/--ry (3D tilt). */
-function HoloTilt({ children, rainbow = true, max = 14, radius = 12, style, className = "" }) {
+function HoloTilt({ children, rainbow = true, max = 14, radius = 12, style, className = "" }: any) {
   const ref = React.useRef(null);
   const raf = React.useRef(0);
 
@@ -49,7 +49,7 @@ function HoloTilt({ children, rainbow = true, max = 14, radius = 12, style, clas
 
 /* Holoverse — LiquidChrome animated background (raw WebGL, no deps).
    Adapted from the React-Bits LiquidChrome shader. window.LiquidChrome */
-function LiquidChrome({ baseColor = [0.12, 0.10, 0.18], speed = 0.5, amplitude = 0.5, frequencyX = 3, frequencyY = 2, interactive = true, style }) {
+function LiquidChrome({ baseColor = [0.12, 0.10, 0.18], speed = 0.5, amplitude = 0.5, frequencyX = 3, frequencyY = 2, interactive = true, style }: any) {
   const ref = React.useRef(null);
   React.useEffect(() => {
     const container = ref.current;

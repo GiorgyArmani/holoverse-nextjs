@@ -8,34 +8,43 @@
    ============================================================ */
 
 :root {
-  /* --- surfaces (deep arcane plum-black, layered) --- */
-  --bg:        #0a0712;
-  --bg-grad-1: #120c20;
-  --bg-grad-2: #08050f;
-  --surface:   #14101f;
-  --surface-2: #1a1529;
-  --surface-3: #221b34;
-  --surface-hi:#2c2440;
+  /* --- surfaces (deep mystic indigo, layered — FF night-sky) --- */
+  --bg:        #090b18;
+  --bg-grad-1: #101226;
+  --bg-grad-2: #07070f;
+  --surface:   #121527;
+  --surface-2: #181b30;
+  --surface-3: #20243e;
+  --surface-hi:#2a2f4e;
 
-  /* --- hairlines & strokes (silver-tinted) --- */
-  --border:        rgba(214,210,235,0.10);
-  --border-strong: rgba(214,210,235,0.18);
+  /* --- hairlines & strokes (gold-tinted, FF menu trim) --- */
+  --border:        rgba(218,200,150,0.13);
+  --border-strong: rgba(220,200,148,0.28);
   --border-glow:   rgba(166,139,255,0.5);
 
-  /* --- text --- */
-  --text:   #f3f1fa;
-  --text-2: #bcb6d2;
-  --text-3: #837c9c;
-  --text-4: #574e6e;
+  /* --- text (contraste alto para lectura) --- */
+  --text:   #f4f2fa;
+  --text-2: #cfcae2;
+  --text-3: #a39cbe;
+  --text-4: #6b6286;
 
-  /* --- accents: purple + silver/platinum --- */
+  /* --- accents: purple + GOLD (mystic FF) --- */
   --violet: #a68bff;
   --violet-deep: #7c5cff;
   --cyan:   #c8d2ff;   /* cool silver-blue */
   --pink:   #c9a9ff;   /* lilac */
-  --gold:   #d8d8ea;   /* repurposed as silver */
+  --gold:   #e6cd8f;   /* oro real */
+  --gold-deep: #c9ab60;
+  --gold-soft: rgba(230,205,143,.13);
   --silver: #d9d7ea;
   --mint:   #b8b4d8;
+
+  /* announcement bar (gold scroll) */
+  --announce-bg: linear-gradient(115deg, #f0e2b0 0%, #cdb068 40%, #efe0ae 65%, #c9ab60 100%);
+  --announce-text: #241c08;
+
+  /* gold chrome for ornaments */
+  --gold-chrome: linear-gradient(160deg, #f8eecb 0%, #e2c98a 28%, #b3914c 50%, #f4e7bb 64%, #cdb068 84%, #a8843a 100%);
 
   --accent:      var(--violet);
   --accent-soft: rgba(166,139,255,0.16);
@@ -105,9 +114,10 @@ body {
   margin: 0;
   font-family: var(--font-body);
   background:
-    radial-gradient(1100px 680px at 82% -10%, rgba(166,139,255,0.16), transparent 60%),
-    radial-gradient(900px 620px at 6% 4%, rgba(124,92,255,0.12), transparent 55%),
-    radial-gradient(700px 700px at 50% 110%, rgba(150,140,200,0.07), transparent 60%),
+    radial-gradient(1100px 680px at 82% -10%, rgba(166,139,255,0.15), transparent 60%),
+    radial-gradient(760px 460px at 96% 18%, rgba(216,196,137,0.05), transparent 55%),
+    radial-gradient(900px 620px at 6% 4%, rgba(96,82,200,0.12), transparent 55%),
+    radial-gradient(700px 700px at 50% 110%, rgba(140,150,220,0.07), transparent 60%),
     linear-gradient(180deg, var(--bg-grad-1), var(--bg-grad-2));
   background-attachment: fixed;
   color: var(--text);
@@ -129,7 +139,7 @@ h1, h2 {
   background: var(--silver-chrome); background-size: 100% 100%;
   -webkit-background-clip: text; background-clip: text;
   color: transparent; -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 1px 1px rgba(0,0,0,.5)) drop-shadow(0 0 18px rgba(166,139,255,.12));
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.5)) drop-shadow(0 0 20px rgba(230,205,143,.14));
 }
 p { margin: 0; }
 a { color: inherit; text-decoration: none; }
@@ -258,11 +268,12 @@ img { display: block; max-width: 100%; }
 .gtag .dot-poke { background: var(--g-poke); box-shadow: 0 0 10px var(--g-poke); }
 .gtag .dot-op   { background: var(--g-op); box-shadow: 0 0 10px var(--g-op); }
 
-/* ---------- card surface ---------- */
+/* ---------- card surface (panel FF: índigo + filo dorado + brillo interno) ---------- */
 .panel {
-  background: linear-gradient(180deg, var(--surface-2), var(--surface));
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
+  background: linear-gradient(168deg, rgba(40,44,92,.34), var(--surface));
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04), inset 0 16px 40px rgba(96,110,220,.05);
 }
 .panel-pad { padding: 22px; }
 
@@ -328,9 +339,11 @@ img { display: block; max-width: 100%; }
 .input::placeholder { color: var(--text-4); }
 
 /* ---------- utility ---------- */
-.eyebrow { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--text-3); }
+/* eyebrow ceremonial: Cinzel + oro (FF) */
+.eyebrow { font-family: var(--font-title); font-size: 11px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); }
+.eyebrow::before { content: "✦ "; opacity: .7; }
 .muted { color: var(--text-3); }
-.divider { height: 1px; background: var(--border); border: 0; }
+.divider { height: 1px; border: 0; background: linear-gradient(90deg, transparent, rgba(220,200,148,.5), transparent); }
 /* transform-only entrance: content stays visible even if the animation
    timeline is paused (preview iframes freeze CSS animations at t=0). */
 .fade-up { animation: fadeUp .6s cubic-bezier(.2,.7,.2,1) both; }
@@ -338,9 +351,9 @@ img { display: block; max-width: 100%; }
 .spin { animation: spin360 1s linear infinite; }
 @keyframes spin360 { to { transform: rotate(360deg); } }
 
-/* price */
-.price-ars { font-family: var(--font-display); font-weight: 700; }
-.price-usd { color: var(--text-3); font-size: .82em; }
+/* price — el ARS protagonista, el USD legible (antes quedaba muy apagado) */
+.price-ars { font-family: var(--font-display); font-weight: 700; letter-spacing: .01em; }
+.price-usd { color: var(--text-2); font-size: .86em; font-weight: 600; }
 
 /* ============================================================
    Holographic tilt card — magical TCG foil (pointer-driven)
@@ -439,7 +452,7 @@ img { display: block; max-width: 100%; }
 .band-edge { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .band-violet { background: linear-gradient(180deg, rgba(124,92,255,.10), rgba(20,16,41,.55) 50%, rgba(124,92,255,.06)); }
 .band-deep { background: linear-gradient(180deg, rgba(8,5,15,.0), rgba(8,5,15,.6) 50%, rgba(8,5,15,0)); }
-.band-glowtop::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--holo); opacity: .5; }
+.band-glowtop::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: linear-gradient(90deg, transparent, rgba(230,205,143,.7), rgba(166,139,255,.5), transparent); opacity: .7; }
 
 /* ============================================================
    RPG flavor — loot, chapters, realms, HUD, quests, vignette
@@ -450,15 +463,16 @@ img { display: block; max-width: 100%; }
 .loot-rare { box-shadow: 0 0 0 1px rgba(201,169,255,.45), 0 0 20px rgba(124,92,255,.3); border-radius: 13px; }
 .loot-uncommon { box-shadow: 0 0 0 1px rgba(200,210,255,.32); border-radius: 13px; }
 
-/* chapter numerals */
+/* chapter numerals — numerales de grimorio en oro */
 .chapter-num {
   font-family: var(--font-title); font-weight: 900; font-size: clamp(42px, 5vw, 66px); line-height: .78;
   /* tight line-height makes glyphs overshoot the box; background-clip:text
      only paints inside it — padding extends the paint area so tops aren't cut */
   padding-top: .16em;
-  background: var(--purple-chrome); background-size: 200% 100%;
+  background: var(--gold-chrome); background-size: 200% 100%;
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-  animation: holoShift 9s linear infinite; opacity: .9;
+  animation: holoShift 9s linear infinite; opacity: .95;
+  filter: drop-shadow(0 0 14px rgba(216,196,137,.25));
 }
 
 /* HUD chips */
@@ -489,12 +503,13 @@ img { display: block; max-width: 100%; }
 .realm-enter { display: inline-flex; align-items: center; gap: 7px; margin-top: 18px; font-family: var(--font-display); font-weight: 700; font-size: 13.5px; color: var(--text-2); transition: color .2s; }
 .realm-tile:hover .realm-enter { color: var(--text); }
 
-/* quest tag */
+/* quest tag — sello dorado de misión */
 .quest-tag {
-  display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-weight: 800;
-  font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #1a1030;
-  background: var(--holo); background-size: 200% 100%; animation: holoShift 7s linear infinite;
-  padding: 5px 11px; border-radius: 999px;
+  display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-title); font-weight: 800;
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #241c08;
+  background: var(--gold-chrome); background-size: 200% 100%; animation: holoShift 7s linear infinite;
+  padding: 6px 13px; border-radius: 4px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 4px 14px rgba(201,171,96,.3);
 }
 
 /* cinematic vignette for game ambiance */
@@ -647,4 +662,56 @@ body::after {
   .holo-tilt, .holo-tilt.is-hover { transition: none; transform: none; }
   .tcard.foil::after { animation: none; opacity: .3; }
   .prisma-wrap { animation: none; } /* skip only the fly-in entrance */
+}
+
+/* ============================================================
+   Admin panel — estética Final Fantasy (clases ff-*)
+   ============================================================ */
+.ff-root { display: grid; grid-template-columns: 252px 1fr; min-height: 100vh; color: var(--text);
+  background:
+    radial-gradient(1100px 520px at 85% -10%, rgba(64,72,160,.22), transparent 60%),
+    radial-gradient(800px 500px at -10% 110%, rgba(120,90,200,.12), transparent 60%),
+    linear-gradient(180deg, #0a0c1e 0%, #070710 100%); }
+.ff-side { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; padding: 20px 14px;
+  background: linear-gradient(180deg, rgba(26,30,68,.78), rgba(10,11,26,.94));
+  border-right: 1px solid rgba(216,196,137,.28); box-shadow: inset -1px 0 0 rgba(255,255,255,.04); }
+.ff-item { display: flex; align-items: center; gap: 11px; width: 100%; padding: 12px 14px; margin: 2px 0;
+  background: transparent; border: 1px solid transparent; border-radius: 3px; cursor: pointer; text-align: left;
+  color: var(--text-2); font-family: var(--font-title); font-size: 12.5px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; transition: all .18s; }
+.ff-item:hover { color: #f0e6c8; border-color: rgba(216,196,137,.25); }
+.ff-item.on { color: #f4e9c8; border-color: rgba(216,196,137,.55);
+  background: linear-gradient(90deg, rgba(216,196,137,.16), rgba(216,196,137,.02));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05), 0 0 18px rgba(216,196,137,.08); }
+.ff-cursor { color: #d9c489; font-size: 10px; width: 12px; flex-shrink: 0; opacity: 0; transform: translateX(-4px); transition: all .18s; }
+.ff-item.on .ff-cursor, .ff-item:hover .ff-cursor { opacity: 1; transform: none; }
+.ff-panel { background: linear-gradient(168deg, rgba(38,42,92,.46), rgba(13,14,30,.94));
+  border: 1px solid rgba(216,196,137,.3); border-radius: 5px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05), inset 0 18px 40px rgba(96,110,220,.05), 0 14px 34px rgba(0,0,0,.4); }
+.ff-h { font-family: var(--font-title); letter-spacing: .14em; text-transform: uppercase; color: #ecdfb8; font-weight: 700; }
+.ff-hr { height: 1px; border: 0; background: linear-gradient(90deg, transparent, rgba(216,196,137,.55), transparent); }
+.ff-eyebrow { font-family: var(--font-title); font-size: 10px; letter-spacing: .26em; text-transform: uppercase; color: rgba(216,196,137,.75); }
+.ff-root .input { background: rgba(7,8,18,.75); border: 1px solid rgba(216,196,137,.22); border-radius: 3px; }
+.ff-root .input:focus { border-color: rgba(216,196,137,.6); box-shadow: 0 0 0 3px rgba(216,196,137,.12); }
+.ff-btn { display: inline-flex; align-items: center; gap: 7px; padding: 9px 16px; border-radius: 3px; cursor: pointer;
+  font-family: var(--font-display); font-size: 13px; font-weight: 700; color: #ecdfb8;
+  border: 1px solid rgba(216,196,137,.45); background: linear-gradient(180deg, rgba(216,196,137,.12), rgba(216,196,137,.03));
+  transition: all .18s; }
+.ff-btn:hover { border-color: rgba(216,196,137,.8); box-shadow: 0 0 16px rgba(216,196,137,.15); }
+.ff-btn:disabled { opacity: .5; cursor: default; }
+.ff-btn-gold { background: linear-gradient(180deg, #efe0ae, #c9ab60); color: #241c08; border-color: #f6eccb;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.65), 0 4px 14px rgba(201,171,96,.3); }
+.ff-btn-gold:hover { filter: brightness(1.06); }
+.ff-btn-sm { padding: 6px 11px; font-size: 12px; }
+.ff-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 3px; font-size: 11.5px;
+  font-weight: 700; font-family: var(--font-display); border: 1px solid; cursor: pointer; background: transparent; transition: all .15s; }
+.ff-stat { padding: 18px 20px; }
+.ff-stat b { display: block; font-family: var(--font-title); font-size: 26px; font-weight: 800; color: #f1e7c8; margin-top: 6px; }
+.ff-corner { position: relative; }
+.ff-corner:before, .ff-corner:after { content: "\2726"; position: absolute; top: 6px; font-size: 9px; color: rgba(216,196,137,.55); }
+.ff-corner:before { left: 9px; } .ff-corner:after { right: 9px; }
+@media (max-width: 920px) {
+  .ff-root { grid-template-columns: 1fr; }
+  .ff-side { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; }
+  .ff-item { width: auto; }
 }

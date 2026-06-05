@@ -4,4 +4,9 @@
 .DS_Store
 *.tsbuildinfo
 next-env.d.ts
+
 *.sql
+
+# env — solo el example se versiona
+.env*
+

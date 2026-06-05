@@ -1,10 +1,11 @@
-/* Holoverse mock catalog */
-/* Holoverse mock catalog. Attaches to window.HV. */
+/* Holoverse catalog.
+   El mock de abajo es el FALLBACK si la DB no responde;
+   en runtime hydrateHV() lo reemplaza con datos de Supabase. */
 
-  const USD = 1010; // ARS per USD, for display only
+  const USD = 1010; // ARS per USD, fallback (la DB manda via site_settings)
 
-  // ---- helper to derive ARS from a USD price ----
-  const ars = (usd) => Math.round(usd * USD);
+  // ---- helper to derive ARS from a USD price (usa la cotización vigente) ----
+  const ars = (usd) => Math.round(usd * HV.USD);
 
   const SINGLES = [
     { id: "s1", type: "single", game: "mtg", name: "Ragavan, Nimble Pilferer", set: "Modern Horizons 2", setCode: "MH2", number: "138/303", rarity: "mythic", usd: 64.0, foil: true, hot: true, conditions: [["NM",64.0,3],["LP",58.5,5],["MP",49.0,2]] },
@@ -61,10 +62,33 @@
     USD, ars,
     SINGLES, SEALED, ACCESSORIES, GAMES,
     all,
-    byId: (id) => all.find((x) => x.id === id),
+    byId: (id) => HV.all.find((x) => x.id === id),
+    byUuid: (u) => HV.all.find((x) => x.uuid === u),
     fmtArs: (n) => "$" + Math.round(n).toLocaleString("es-AR"),
     fmtUsd: (n) => "US$" + n.toFixed(2),
     gameLabel: (g) => (GAMES[g] ? GAMES[g].label : ""),
-    rarityLabel: (r) => ({ common: "Común", uncommon: "Infrecuente", rare: "Rara", mythic: "Mítica / Chase" }[r] || r),
+    rarityLabel: (r) => ({ common: "Common", uncommon: "Uncommon", rare: "Rare", mythic: "Mythic / Chase" }[r] || r),
+    // configuración del sitio (fallbacks; la DB manda via site_settings)
+    announcement: "Envío asegurado gratis +$80.000 · Retiro en Palermo · Preventas abiertas",
+    shipUsd: 4.5,
+    freeShippingArs: 80000,
   };
+
+  /* Reemplaza el mock con el catálogo real (server fetch → prop → acá).
+     Si catalog es null (DB caída / env faltante), el mock queda como está. */
+  export function hydrateHV(catalog) {
+    if (!catalog || !catalog.items || !catalog.items.length) return HV;
+    HV.SINGLES = catalog.items.filter((x) => x.type === "single");
+    HV.SEALED = catalog.items.filter((x) => x.type === "sealed");
+    HV.ACCESSORIES = catalog.items.filter((x) => x.type === "acc");
+    HV.all = catalog.items;
+    const s = catalog.settings;
+    if (s) {
+      HV.USD = s.usdArsRate || HV.USD;
+      HV.announcement = s.announcement || HV.announcement;
+      HV.shipUsd = s.flatShippingUsd ?? HV.shipUsd;
+      HV.freeShippingArs = s.freeShippingThresholdArs ?? HV.freeShippingArs;
+    }
+    return HV;
+  }
 

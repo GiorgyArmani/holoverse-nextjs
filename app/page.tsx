@@ -1,5 +1,10 @@
 import Holoverse from "../components/Holoverse";
+import { getCatalog } from "../lib/catalog";
 
-export default function Page() {
-  return <Holoverse />;
+// catálogo siempre fresco: los cambios del admin se ven al instante
+export const dynamic = "force-dynamic";
+
+export default async function Page() {
+  const catalog = await getCatalog();
+  return <Holoverse catalog={catalog} />;
 }
