@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // The UI is a faithful port of an HTML/React prototype; relax build-time
-  // type/lint gating so it runs as-is. Tighten as you refactor.
+  // type gating so it runs as-is. Tighten as you refactor.
+  // (Next 16 ya no corre ESLint en el build; la clave `eslint` se eliminó.)
   typescript: { ignoreBuildErrors: true },
-  eslint: { ignoreDuringBuilds: true },
 };
 export default nextConfig;

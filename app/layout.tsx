@@ -2,21 +2,22 @@ import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { Cinzel, Space_Grotesk, Manrope } from "next/font/google";
 
+/* solo los pesos que usa el CSS (los intermedios caen al más cercano) */
 const cinzel = Cinzel({
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800", "900"],
+  weight: ["700", "800", "900"],
   variable: "--font-cinzel",
   display: "swap",
 });
 const grotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "600", "700"],
   variable: "--font-grotesk",
   display: "swap",
 });
 const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "600", "700"],
   variable: "--font-manrope",
   display: "swap",
 });
@@ -102,8 +103,15 @@ const jsonLd = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   return (
     <html lang="es" className={`${cinzel.variable} ${grotesk.variable} ${manrope.variable}`}>
+      <head>
+        {/* adelanta el handshake TLS con la DB (auth/wishlist) y los CDNs de imágenes */}
+        {supabaseUrl && <link rel="preconnect" href={supabaseUrl} crossOrigin="anonymous" />}
+        <link rel="preconnect" href="https://cards.scryfall.io" />
+        <link rel="preconnect" href="https://assets.tcgdex.net" />
+      </head>
       <body>
         <script
           type="application/ld+json"

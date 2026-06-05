@@ -1,8 +1,10 @@
-/* Refresca la sesión de Supabase en cada request (cookies) */
+/* Refresca la sesión de Supabase donde el SERVER necesita leerla
+   (la tienda hace auth client-side; el browser client refresca solo).
+   Next 16: proxy.ts reemplaza a middleware.ts y corre en Node.js. */
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -28,5 +30,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico)$).*)"],
+  matcher: ["/admin/:path*", "/api/revalidate"],
 };

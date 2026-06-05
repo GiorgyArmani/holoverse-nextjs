@@ -2,6 +2,7 @@
 /* Configuración del sitio: cotización, envío, anuncio (site_settings). */
 import React, { useState, useEffect } from "react";
 import { supabaseBrowser } from "../../lib/supabase-browser";
+import { revalidateHome } from "../../lib/revalidate-home";
 import { Input } from "./ui";
 
 export default function SettingsTab({ toast }: any) {
@@ -27,7 +28,7 @@ export default function SettingsTab({ toast }: any) {
     }).eq("id", 1);
     setBusy(false);
     if (error) toast("Error: " + error.message);
-    else toast("Configuración guardada ✦");
+    else { toast("Configuración guardada ✦"); revalidateHome(); }
   };
 
   return (

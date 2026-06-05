@@ -2,6 +2,7 @@
 /* Holoverse — app shell de la tienda: router interno, carrito, auth y wishlist.
    Cada sección vive en components/store/. */
 import React, { useState, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { hydrateHV } from "../lib/data";
 import { supabaseBrowser } from "../lib/supabase-browser";
@@ -11,12 +12,20 @@ import Header from "./store/Header";
 import Footer from "./store/Footer";
 import StaggeredMenu from "./store/Menu";
 import Prisma from "./store/Prisma";
-import SearchOverlay from "./store/SearchOverlay";
 import Home from "./store/Home";
-import Browse, { SearchResults } from "./store/Browse";
-import { SinglePDP, SealedPDP } from "./store/PDP";
-import CartCheckout from "./store/Cart";
-import Account from "./store/Account";
+
+/* solo Home entra en el bundle inicial; el resto se baja al navegar */
+function ScreenLoading() {
+  return <div className="wrap" style={{ padding: "120px 28px", textAlign: "center" }}><p className="muted">Invocando…</p></div>;
+}
+const lazy = (loader: any) => dynamic(loader, { loading: ScreenLoading });
+const Browse = lazy(() => import("./store/Browse"));
+const SearchResults = lazy(() => import("./store/Browse").then((m) => m.SearchResults));
+const SinglePDP = lazy(() => import("./store/PDP").then((m) => m.SinglePDP));
+const SealedPDP = lazy(() => import("./store/PDP").then((m) => m.SealedPDP));
+const CartCheckout = lazy(() => import("./store/Cart"));
+const Account = lazy(() => import("./store/Account"));
+const SearchOverlay = dynamic(() => import("./store/SearchOverlay"));
 
 const ACCENTS = {
   holo:   { violet: "#8b7dff" },

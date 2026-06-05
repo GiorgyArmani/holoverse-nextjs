@@ -19,7 +19,7 @@ function Denied({ title, msg }: { title: string; msg: string }) {
 }
 
 export default async function AdminPage() {
-  const sb = supabaseRSC();
+  const sb = await supabaseRSC();
   const { data: { user } } = await sb.auth.getUser();
 
   if (!user) {

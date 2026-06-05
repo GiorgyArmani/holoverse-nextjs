@@ -2,6 +2,7 @@
 /* Fila editable del inventario + editor de condiciones (singles). */
 import React, { useState } from "react";
 import { supabaseBrowser } from "../../lib/supabase-browser";
+import { revalidateHome } from "../../lib/revalidate-home";
 import { rarityInfo } from "../../lib/rarities";
 import { Input, Toggle, ImageField, GAME_LABEL, TYPE_LABEL, stockOf } from "./ui";
 
@@ -20,7 +21,7 @@ function ConditionsEditor({ product, onSaved, toast }: any) {
     const { error } = clean.length ? await sb.from("product_conditions").insert(clean) : { error: null } as any;
     setBusy(false);
     if (error) toast("Error: " + error.message);
-    else { toast("Condiciones guardadas"); onSaved(); }
+    else { toast("Condiciones guardadas"); revalidateHome(); onSaved(); }
   };
 
   return (
@@ -61,7 +62,7 @@ export default function ProductRow({ p, onSaved, toast }: any) {
     }).eq("id", p.id);
     setBusy(false);
     if (error) toast("Error: " + error.message);
-    else { toast(`${f.name} guardado`); onSaved(); }
+    else { toast(`${f.name} guardado`); revalidateHome(); onSaved(); }
   };
 
   /* eliminar definitivo; si tiene pedidos asociados la FK lo bloquea → sugerir deslistar.
@@ -78,7 +79,7 @@ export default function ProductRow({ p, onSaved, toast }: any) {
         : `Error al eliminar: ${error.message} (código ${error.code || "?"})`);
     } else if (!data || data.length === 0) {
       toast("La base no permitió el borrado: tu sesión no tiene permisos de admin activos. Cerrá sesión y volvé a entrar.");
-    } else { toast(`${p.name} eliminado de la bóveda`); onSaved(); }
+    } else { toast(`${p.name} eliminado de la bóveda`); revalidateHome(); onSaved(); }
   };
 
   const totalStock = stockOf(p);

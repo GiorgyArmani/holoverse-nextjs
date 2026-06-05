@@ -3,6 +3,7 @@
    stock, flags) + orden + alta de producto. */
 import React, { useState, useEffect } from "react";
 import { supabaseBrowser } from "../../lib/supabase-browser";
+import { revalidateHome } from "../../lib/revalidate-home";
 import { RARITIES } from "../../lib/rarities";
 import { findImageForSingle } from "../../lib/bulk-images";
 import { stockOf } from "./ui";
@@ -76,6 +77,7 @@ export default function ProductsTab({ toast }: any) {
       done++;
     }
     setBulk("");
+    if (found) revalidateHome();
     toast(`✦ ${found} imágenes agregadas${misses.length ? ` · sin match: ${misses.slice(0, 3).join(", ")}${misses.length > 3 ? ` y ${misses.length - 3} más` : ""}` : ""}`);
     load();
   };

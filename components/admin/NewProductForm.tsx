@@ -3,6 +3,7 @@
    imagen por URL o subida al bucket. Singles crean su condición NM inicial. */
 import React, { useState } from "react";
 import { supabaseBrowser } from "../../lib/supabase-browser";
+import { revalidateHome } from "../../lib/revalidate-home";
 import { RARITIES } from "../../lib/rarities";
 import { Input, Select, Toggle, ImageField, GAME_LABEL } from "./ui";
 import ScryfallSearch from "./ScryfallSearch";
@@ -73,7 +74,7 @@ export default function NewProductForm({ onSaved, toast, onClose }: any) {
     }
     setBusy(false);
     if (error) toast("Error: " + error.message);
-    else { toast(`${f.name} creado ✦`); onSaved(); onClose(); }
+    else { toast(`${f.name} creado ✦`); revalidateHome(); onSaved(); onClose(); }
   };
 
   return (
