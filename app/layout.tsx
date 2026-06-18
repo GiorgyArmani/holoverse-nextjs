@@ -25,7 +25,7 @@ const manrope = Manrope({
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://holoverse.com.ar";
 const SITE_NAME = "Holoverse";
 const DESCRIPTION =
-  "Tienda online de TCG en Buenos Aires: singles chase, producto sellado y accesorios de Magic: The Gathering, Pokémon y One Piece. Envíos a toda Argentina, retiro en Palermo y preventas abiertas.";
+  "Tienda online de TCG en Banfield, Buenos Aires: singles chase, producto sellado y accesorios de Magic: The Gathering, Pokémon y One Piece. Envíos nacionales e internacionales y preventas abiertas.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

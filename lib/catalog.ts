@@ -91,6 +91,7 @@ export async function getCatalog() {
       announcement: s.announcement,
       flatShippingUsd: Number(s.flat_shipping_usd),
       freeShippingThresholdArs: Number(s.free_shipping_threshold_ars),
+      marketplaceCommissionPct: s.marketplace_commission_pct != null ? Number(s.marketplace_commission_pct) : 10,
     } : null,
   };
 }

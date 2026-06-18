@@ -3,7 +3,54 @@
    (pagada + crédito dispara el bono +10% vía trigger en la DB). */
 import React, { useState, useEffect } from "react";
 import { supabaseBrowser } from "../../lib/supabase-browser";
-import { fmtArs, fmtDate, Badge, SUB_STATUS } from "./ui";
+import { fmtArs, fmtUsd, fmtDate, Badge, SUB_STATUS, GAME_LABEL } from "./ui";
+
+const COND_LABEL: any = { NM: "NM · casi nueva", LP: "LP · poco jugada", MP: "MP · jugada", HP: "HP · muy jugada" };
+
+/* Detalle de los items de una compra: datos estructurados + fotos del cliente
+   (firmamos las URLs del bucket privado submission-photos para verlas). */
+function SubItems({ items }: any) {
+  const [urls, setUrls] = useState<any>({});
+  useEffect(() => {
+    const paths = (items || []).flatMap((i: any) => i.photo_urls || []);
+    if (!paths.length) return;
+    (async () => {
+      const { data } = await supabaseBrowser().storage.from("submission-photos").createSignedUrls(paths, 3600);
+      const map: any = {};
+      (data || []).forEach((d: any) => { if (d.signedUrl) map[d.path] = d.signedUrl; });
+      setUrls(map);
+    })();
+  }, [items]);
+
+  if (!items || !items.length) return <div className="muted" style={{ fontSize: 12.5, marginTop: 10 }}>Sin items</div>;
+  return (
+    <div style={{ marginTop: 10, borderTop: "1px solid rgba(216,196,137,.15)", paddingTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+      {items.map((i: any) => (
+        <div key={i.id} style={{ display: "flex", gap: 12, alignItems: "flex-start", flexWrap: "wrap" }}>
+          <div style={{ flex: 1, minWidth: 220 }}>
+            <div style={{ fontSize: 13, fontWeight: 700 }}>
+              {i.quantity}× {i.name}{i.is_foil ? " ✦ foil" : ""}
+            </div>
+            <div className="muted" style={{ fontSize: 11.5, marginTop: 1 }}>
+              {[GAME_LABEL[i.game], i.set_name, i.card_number, i.condition ? COND_LABEL[i.condition] || i.condition : null].filter(Boolean).join(" · ")}
+              {i.asking_price_usd != null ? ` · pide ${fmtUsd(i.asking_price_usd)}/u` : ""}
+            </div>
+          </div>
+          {(i.photo_urls || []).length > 0 && (
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {i.photo_urls.map((p: string) => (
+                <a key={p} href={urls[p] || "#"} target="_blank" rel="noreferrer" title="Ver foto del cliente"
+                  style={{ width: 44, height: 44, borderRadius: 6, overflow: "hidden", border: "1px solid rgba(216,196,137,.3)", display: "block", background: "rgba(216,196,137,.06)" }}>
+                  {urls[p] ? <img src={urls[p]} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : null}
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 function SubmissionRow({ s, onChanged, toast }: any) {
   const [offer, setOffer] = useState(s.offer_total_ars ?? "");
@@ -32,9 +79,7 @@ function SubmissionRow({ s, onChanged, toast }: any) {
         {s.offer_total_ars != null && <span style={{ fontFamily: "var(--font-display)", fontWeight: 700 }}>{fmtArs(s.offer_total_ars)}</span>}
         <Badge map={SUB_STATUS} k={s.status} />
       </div>
-      <div className="muted" style={{ fontSize: 12.5, marginTop: 10, borderTop: "1px solid rgba(216,196,137,.15)", paddingTop: 10 }}>
-        {(s.sell_submission_items || []).map((i: any) => `${i.quantity}× ${i.name}`).join(" · ") || "Sin items"}
-      </div>
+      <SubItems items={s.sell_submission_items} />
       {s.status === "pending" && (
         <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap", alignItems: "center" }}>
           <input className="input" style={{ width: 160 }} type="number" min="0" placeholder="Oferta total ARS" value={offer} onChange={(e) => setOffer(e.target.value)} />

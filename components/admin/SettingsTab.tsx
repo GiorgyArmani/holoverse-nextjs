@@ -25,6 +25,7 @@ export default function SettingsTab({ toast }: any) {
     const { error } = await supabaseBrowser().from("site_settings").update({
       usd_ars_rate: Number(f.usd_ars_rate), flat_shipping_usd: Number(f.flat_shipping_usd),
       free_shipping_threshold_ars: Number(f.free_shipping_threshold_ars), announcement: f.announcement,
+      marketplace_commission_pct: Number(f.marketplace_commission_pct),
     }).eq("id", 1);
     setBusy(false);
     if (error) toast("Error: " + error.message);
@@ -38,7 +39,8 @@ export default function SettingsTab({ toast }: any) {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
         <Input label="Cotización USD → ARS" type="number" step="0.01" min="0" value={f.usd_ars_rate} onChange={(e: any) => set("usd_ars_rate", e.target.value)} />
         <Input label="Costo de envío (USD)" type="number" step="0.01" min="0" value={f.flat_shipping_usd} onChange={(e: any) => set("flat_shipping_usd", e.target.value)} />
-        <Input label="Envío gratis desde (ARS)" type="number" min="0" value={f.free_shipping_threshold_ars} onChange={(e: any) => set("free_shipping_threshold_ars", e.target.value)} style={{ gridColumn: "span 2" }} />
+        <Input label="Envío gratis desde (ARS)" type="number" min="0" value={f.free_shipping_threshold_ars} onChange={(e: any) => set("free_shipping_threshold_ars", e.target.value)} />
+        <Input label="Comisión marketplace (%)" type="number" step="0.5" min="0" max="100" value={f.marketplace_commission_pct ?? 10} onChange={(e: any) => set("marketplace_commission_pct", e.target.value)} />
         <Input label="Barra de anuncio" value={f.announcement || ""} onChange={(e: any) => set("announcement", e.target.value)} style={{ gridColumn: "span 2" }} />
       </div>
       <button className="ff-btn ff-btn-gold" style={{ marginTop: 20 }} disabled={busy} onClick={save}>{busy ? "Guardando…" : "✦ Guardar configuración"}</button>

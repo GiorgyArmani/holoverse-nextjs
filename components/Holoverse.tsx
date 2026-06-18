@@ -25,6 +25,10 @@ const SinglePDP = lazy(() => import("./store/PDP").then((m) => m.SinglePDP));
 const SealedPDP = lazy(() => import("./store/PDP").then((m) => m.SealedPDP));
 const CartCheckout = lazy(() => import("./store/Cart"));
 const Account = lazy(() => import("./store/Account"));
+const OrderTracking = lazy(() => import("./store/OrderTracking"));
+const MarketplaceBrowse = lazy(() => import("./store/Marketplace").then((m) => m.MarketplaceBrowse));
+const CollectorProfile = lazy(() => import("./store/Marketplace").then((m) => m.CollectorProfile));
+const ListingDetail = lazy(() => import("./store/Marketplace").then((m) => m.ListingDetail));
 const SearchOverlay = dynamic(() => import("./store/SearchOverlay"));
 
 const ACCENTS = {
@@ -136,6 +140,7 @@ export default function App({ catalog }: { catalog?: any }) {
     showToast(`Agregaste ${item.name.split("(")[0].trim()} al carrito`);
   };
   const removeFromCart = (key) => setCart((c) => c.filter((x) => x.key !== key));
+  const clearCart = () => setCart([]);
   const setQty = (key, qty) => setCart((c) => c.map((x) => x.key === key ? { ...x, qty } : x));
   const cartCount = cart.reduce((n, x) => n + x.qty, 0);
   const cartTotalUsd = cart.reduce((n, x) => {
@@ -152,7 +157,7 @@ export default function App({ catalog }: { catalog?: any }) {
 
   const ctx = {
     route: view.route, params: view.params, nav,
-    cart, cartCount, addToCart, removeFromCart, setQty, cartTotalUsd,
+    cart, cartCount, addToCart, removeFromCart, clearCart, setQty, cartTotalUsd,
     openSearch: () => setSearchOpen(true), closeSearch: () => setSearchOpen(false),
     menuOpen, toggleMenu: () => setMenuOpen((o) => !o), closeMenu: () => setMenuOpen(false),
     showToast, cardStyle: t.cardStyle, heroLayout: t.heroLayout, density: t.density, tweaks: t,
@@ -162,7 +167,8 @@ export default function App({ catalog }: { catalog?: any }) {
 
   const SCREENS = {
     home: Home, browse: Browse, search: SearchResults,
-    single: SinglePDP, sealed: SealedPDP, cart: CartCheckout, account: Account,
+    single: SinglePDP, sealed: SealedPDP, cart: CartCheckout, account: Account, order: OrderTracking,
+    marketplace: MarketplaceBrowse, profile: CollectorProfile, listing: ListingDetail,
   };
   const Screen = SCREENS[view.route] || (() => <Placeholder title={view.route} />);
 

@@ -10,3 +10,6 @@ next-env.d.ts
 # env — solo el example se versiona
 .env*
 
+*.md
+/.claude
+README.md

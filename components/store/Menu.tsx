@@ -11,10 +11,11 @@ export default function StaggeredMenu({ open, onClose }: any) {
     { label: "One Piece", route: "browse", params: { game: "op" } },
     { label: "Sellado", route: "browse", params: { type: "sealed" } },
     { label: "Accesorios", route: "browse", params: { type: "acc" } },
+    { label: "Marketplace", route: "marketplace", params: {} },
     { label: "Vender", route: "account", params: {} },
     { label: "Cuenta", route: "account", params: {} },
   ];
-  const socials = ["Instagram", "Discord", "TikTok", "YouTube"];
+  const socials = [["Instagram", "https://www.instagram.com/holoverse.tcg/"]];
   const go = (it) => { onClose(); nav(it.route, it.params); };
 
   React.useEffect(() => {
@@ -43,7 +44,7 @@ export default function StaggeredMenu({ open, onClose }: any) {
         <div className="sm-socials">
           <div className="sm-socials-title">Seguinos</div>
           <div className="sm-socials-row">
-            {socials.map((s) => <a key={s} className="sm-soc" href="#" onClick={(e) => e.preventDefault()}>{s}</a>)}
+            {socials.map(([s, href]) => <a key={s} className="sm-soc" href={href} target="_blank" rel="noreferrer">{s}</a>)}
           </div>
         </div>
       </aside>

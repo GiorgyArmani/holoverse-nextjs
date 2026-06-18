@@ -99,10 +99,29 @@ function HeroGridStage({ chase }: any) {
   );
 }
 
+const RARITY_RANK: any = { common: 0, uncommon: 1, rare: 2, mythic: 3 };
+
+function pickHeroFan() {
+  const pool = (HV.SINGLES || []).filter(Boolean);
+  if (pool.length < 3) return pool.slice(0, 5);
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  const fan = shuffled.slice(0, Math.min(5, shuffled.length));
+  // bring the highest-rarity card to the center (focal) slot of the fan
+  let best = 0;
+  for (let i = 1; i < fan.length; i++) {
+    if ((RARITY_RANK[fan[i].rarity] ?? 0) > (RARITY_RANK[fan[best].rarity] ?? 0)) best = i;
+  }
+  const mid = Math.floor(fan.length / 2);
+  [fan[mid], fan[best]] = [fan[best], fan[mid]];
+  return fan;
+}
+
 function Hero() {
   const { nav, heroLayout } = useHV();
-  const picks = ["s16", "s14", "s13", "s15", "s17"].map((id) => HV.byId(id)).filter(Boolean);
-  const fan = picks.length >= 3 ? picks : HV.SINGLES.slice(0, 5);
+  // SSR-stable seed; reshuffle to a fresh random hand after mount so it differs each load
+  const seed = ["s16", "s14", "s13", "s15", "s17"].map((id) => HV.byId(id)).filter(Boolean);
+  const [fan, setFan] = useState(seed.length >= 3 ? seed : HV.SINGLES.slice(0, 5));
+  useEffect(() => { setFan(pickHeroFan()); }, []);
   return (
     <section style={{ position: "relative", overflow: "hidden", minHeight: "min(860px, 92vh)", display: "flex", alignItems: "center" }}>
       {/* liquid chrome backdrop */}

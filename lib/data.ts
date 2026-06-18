@@ -69,9 +69,10 @@
     gameLabel: (g) => (GAMES[g] ? GAMES[g].label : ""),
     rarityLabel: (r) => ({ common: "Common", uncommon: "Uncommon", rare: "Rare", mythic: "Mythic / Chase" }[r] || r),
     // configuración del sitio (fallbacks; la DB manda via site_settings)
-    announcement: "Envío asegurado gratis +$80.000 · Retiro en Palermo · Preventas abiertas",
+    announcement: "Envío asegurado gratis +$80.000 · Envíos nacionales e internacionales · Preventas abiertas",
     shipUsd: 4.5,
     freeShippingArs: 80000,
+    commissionPct: 10,
   };
 
   /* Reemplaza el mock con el catálogo real (server fetch → prop → acá).
@@ -88,6 +89,7 @@
       HV.announcement = s.announcement || HV.announcement;
       HV.shipUsd = s.flatShippingUsd ?? HV.shipUsd;
       HV.freeShippingArs = s.freeShippingThresholdArs ?? HV.freeShippingArs;
+      HV.commissionPct = s.marketplaceCommissionPct ?? HV.commissionPct;
     }
     return HV;
   }
