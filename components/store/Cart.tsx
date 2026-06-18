@@ -193,7 +193,7 @@ export default function CartCheckout() {
                 {!user
                   ? <p className="muted" style={{ fontSize: 13.5, marginBottom: 16 }}>Te creamos una cuenta para que sigas tu pedido y coordines el pago. ¿Ya tenés cuenta? <button onClick={() => nav("account")} style={{ background: "transparent", border: 0, color: "var(--violet)", cursor: "pointer", fontSize: 13.5, fontWeight: 600, padding: 0 }}>Iniciá sesión</button>.</p>
                   : <p className="muted" style={{ fontSize: 13.5, marginBottom: 16 }}>Comprando como <b style={{ color: "var(--text)" }}>{user.email}</b>.</p>}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }} className="hv-2col">
                   <div style={{ gridColumn: "1 / -1" }}><Field label="Nombre y apellido" value={buyerName} onChange={(e: any) => setBuyerName(e.target.value)} placeholder="Lucía Fernández" /></div>
                   {!user && <Field label="Email" type="email" value={email} onChange={(e: any) => setEmail(e.target.value)} placeholder="vos@email.com" />}
                   {!user && <Field label="Contraseña (nueva cuenta)" type="password" value={password} onChange={(e: any) => setPassword(e.target.value)} placeholder="mín. 6 caracteres" />}
@@ -203,7 +203,7 @@ export default function CartCheckout() {
               {/* entrega */}
               <div className="panel panel-pad">
                 <h3 style={{ fontSize: 17, marginBottom: 16 }}>Método de entrega</h3>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="hv-2col">
                   {[["ship", "truck", "Envío a domicilio", "Nacional e internacional · asegurado"], ["pickup", "box", "Retiro en local", "Gratis · Banfield, Buenos Aires"]].map(([id, ic, t, sub]) => (
                     <button key={id} onClick={() => setMethod(id)} style={{ textAlign: "left", padding: 16, borderRadius: 14, cursor: "pointer", border: `1px solid ${method === id ? "var(--border-glow)" : "var(--border)"}`, background: method === id ? "var(--accent-soft)" : "var(--surface-2)" }}>
                       <span style={{ color: "var(--violet)", display: "block", marginBottom: 10 }}><Icon name={ic} size={20} /></span>
@@ -216,7 +216,7 @@ export default function CartCheckout() {
               {method === "ship" && (
                 <div className="panel panel-pad">
                   <h3 style={{ fontSize: 17, marginBottom: 16 }}>Dirección de envío</h3>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }} className="hv-2col">
                     <div style={{ gridColumn: "1 / -1" }}><Field label="Dirección" value={address} onChange={(e: any) => setAddress(e.target.value)} placeholder="Av. Hipólito Yrigoyen 1234" /></div>
                     <Field label="Ciudad / Localidad" value={city} onChange={(e: any) => setCity(e.target.value)} placeholder="Banfield" />
                     <Field label="Código postal" value={zip} onChange={(e: any) => setZip(e.target.value)} placeholder="B1828" />

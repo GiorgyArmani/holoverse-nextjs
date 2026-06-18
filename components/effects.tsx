@@ -58,6 +58,14 @@ function LiquidChrome({ baseColor = [0.12, 0.10, 0.18], speed = 0.5, amplitude =
     canvas.style.cssText = "width:100%;height:100%;display:block;";
     const gl = canvas.getContext("webgl", { antialias: true, alpha: false, premultipliedAlpha: false });
     if (!gl) { container.style.background = "linear-gradient(135deg,#1a1430,#0d0a18)"; return; }
+    // en mobile: fondo estático, sin WebGL (perf). En desktop sigue el ambiente.
+    const lowPower = window.matchMedia("(max-width: 820px)").matches;
+    if (lowPower) {
+      container.style.background = "linear-gradient(135deg,#1a1430,#0d0a18)";
+      const ext = gl.getExtension("WEBGL_lose_context"); if (ext) ext.loseContext();
+      return;
+    }
+    container.style.background = "linear-gradient(135deg,#1a1430,#0d0a18)"; // base mientras arranca
     container.appendChild(canvas);
 
     const compile = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); return s; };
@@ -109,17 +117,25 @@ function LiquidChrome({ baseColor = [0.12, 0.10, 0.18], speed = 0.5, amplitude =
     function onMove(e) { const r = container.getBoundingClientRect(); mouse = [(e.clientX - r.left) / r.width, 1 - (e.clientY - r.top) / r.height]; }
     if (interactive) container.addEventListener("pointermove", onMove);
 
-    let raf, start = performance.now();
+    let raf = 0, start = performance.now(), lastDraw = 0;
+    const FRAME = 1000 / 30; // tope ~30fps para bajar el costo de GPU
     function loop(t) {
       raf = requestAnimationFrame(loop);
+      if (t - lastDraw < FRAME) return;
+      lastDraw = t;
       gl.uniform1f(uTime, (t - start) * 0.001 * speed);
       gl.uniform2f(uMouse, mouse[0], mouse[1]);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
-    raf = requestAnimationFrame(loop);
+    const play = () => { if (!raf) { lastDraw = 0; raf = requestAnimationFrame(loop); } };
+    const pause = () => { if (raf) { cancelAnimationFrame(raf); raf = 0; } };
+    // pausa el render cuando el hero no está en pantalla
+    const io = new IntersectionObserver((es) => (es[0].isIntersecting ? play() : pause()), { threshold: 0 });
+    io.observe(container);
+    play(); // arrancá ya; el observer solo pausa cuando el hero sale de pantalla
 
     return () => {
-      cancelAnimationFrame(raf); ro.disconnect();
+      pause(); ro.disconnect(); io.disconnect();
       if (interactive) container.removeEventListener("pointermove", onMove);
       const ext = gl.getExtension("WEBGL_lose_context"); if (ext) ext.loseContext();
       if (canvas.parentElement) canvas.parentElement.removeChild(canvas);

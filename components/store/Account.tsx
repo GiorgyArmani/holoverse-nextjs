@@ -403,7 +403,7 @@ function SellTab({ subs, onSubmitted }: any) {
 
           <div style={{ marginTop: 18 }}>
             <div className="eyebrow" style={{ marginBottom: 8, fontSize: 11 }}>Forma de pago</div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }} className="hv-2col">
               {[["store_credit", "Crédito en tienda", "+10% extra sobre la oferta"], ["cash", "Efectivo", "Pago en 48h tras aceptar"]].map(([id, t, sub2]) => (
                 <button key={id} onClick={() => setPayout(id)} style={{ textAlign: "left", padding: "12px 14px", borderRadius: 12, cursor: "pointer", border: `1px solid ${payout === id ? "var(--border-glow)" : "var(--border)"}`, background: payout === id ? "var(--accent-soft)" : "var(--surface-2)" }}>
                   <div style={{ fontWeight: 700, fontFamily: "var(--font-display)", fontSize: 13.5 }}>{t}</div>
@@ -514,7 +514,7 @@ function ProfileEditor() {
           {!f.avatar_url && <Icon name="plus" size={18} solid />}
         </label>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }} className="hv-2col">
         <Field label="@handle (URL de tu tienda)" value={f.handle} onChange={(e: any) => set("handle", e.target.value)} placeholder="lucia.tcg" />
         <Field label="Instagram (opcional)" value={f.instagram} onChange={(e: any) => set("instagram", e.target.value)} placeholder="@holoverse.tcg" />
         <label style={{ display: "block", gridColumn: "1 / -1" }}>
@@ -588,7 +588,7 @@ function ListingComposer({ onCreated }: any) {
         </>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="hv-2col">
             <div style={{ gridColumn: "1 / -1" }}><Field label="Nombre" value={draft.name} onChange={(e: any) => set("name", e.target.value)} /></div>
             <Field label="Set" value={draft.set_name} onChange={(e: any) => set("set_name", e.target.value)} />
             <Field label="N°" value={draft.card_number} onChange={(e: any) => set("card_number", e.target.value)} />

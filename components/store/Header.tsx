@@ -56,7 +56,7 @@ function NotificationBell() {
       {open && (
         <>
           <div onClick={() => setOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 45 }} />
-          <div className="panel" style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", zIndex: 46, width: 320, maxHeight: 420, overflowY: "auto", boxShadow: "var(--shadow-lg)", padding: 8 }}>
+          <div className="panel" style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", zIndex: 46, width: "min(320px, calc(100vw - 28px))", maxHeight: 420, overflowY: "auto", boxShadow: "var(--shadow-lg)", padding: 8 }}>
             <div className="eyebrow" style={{ padding: "8px 10px" }}>Notificaciones</div>
             {items.length === 0 ? <p className="muted" style={{ fontSize: 13, padding: "12px 10px" }}>No tenés notificaciones.</p>
               : items.map((n) => (
@@ -82,7 +82,7 @@ function NotificationBell() {
 export function Logo({ onClick }: any) {
   return (
     <button onClick={onClick} style={{ display: "flex", alignItems: "center", gap: 11, background: "transparent", border: 0, padding: 0 }}>
-      <span style={{ width: 34, height: 34, borderRadius: 10, background: "var(--purple-chrome)", backgroundSize: "220% 100%", animation: "holoShift 7s linear infinite", display: "grid", placeItems: "center", boxShadow: "0 4px 18px rgba(124,92,255,.45), inset 0 1px 0 rgba(255,255,255,.5)" }}>
+      <span style={{ width: 34, height: 34, borderRadius: 10, background: "var(--purple-chrome)", backgroundSize: "220% 100%", display: "grid", placeItems: "center", boxShadow: "0 4px 18px rgba(124,92,255,.45), inset 0 1px 0 rgba(255,255,255,.5)" }}>
         <span style={{ width: 13, height: 13, borderRadius: "50% 50% 50% 0", background: "#140f23", transform: "rotate(45deg)" }} />
       </span>
       <span className="chrome-name" style={{ fontFamily: "var(--font-title)", fontWeight: 800, fontSize: 18, letterSpacing: ".26em", textTransform: "uppercase", paddingLeft: 2 }}>Holoverse</span>
@@ -102,7 +102,7 @@ export default function Header() {
       backdropFilter: "blur(18px)", WebkitBackdropFilter: "blur(18px)",
       borderBottom: `1px solid ${scrolled ? "var(--border)" : "transparent"}`, transition: "all .3s" }}>
       {/* announcement bar */}
-      <div style={{ background: "var(--announce-bg, var(--holo))", backgroundSize: "200% 100%", animation: "holoShift 8s linear infinite" }}>
+      <div style={{ background: "var(--announce-bg, var(--holo))", backgroundSize: "200% 100%" }}>
         <div className="wrap hv-announce" style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 10, padding: "7px 0", color: "var(--announce-text, #1a1030)", fontSize: 12.5, fontWeight: 700, fontFamily: "var(--font-display)", letterSpacing: ".02em" }}>
           <Icon name="truck" size={15} solid /> {HV.announcement}
         </div>

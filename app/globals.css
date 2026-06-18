@@ -226,13 +226,17 @@ img { display: block; max-width: 100%; }
 
 .btn-holo {
   border: 0; color: #1a1030; position: relative; overflow: hidden;
-  background: var(--purple-chrome); background-size: 220% 100%;
+  background: var(--purple-chrome); background-size: 220% 100%; background-position: 0 0;
   box-shadow: 0 8px 30px rgba(124,92,255,.4), inset 0 1px 0 rgba(255,255,255,.5);
-  animation: holoShift 8s linear infinite;
+  transition: filter .2s ease, box-shadow .2s ease, transform .2s ease;
 }
+/* el brillo holo aparece solo al pasar el mouse — sin animación en loop.
+   re-aseguramos el fondo claro (si no, el .btn:hover genérico lo pinta oscuro
+   y el texto oscuro queda ilegible). */
 .btn-holo:hover {
-  background: var(--purple-chrome); background-size: 220% 100%;
+  background: var(--purple-chrome); background-size: 220% 100%; background-position: 0 0;
   color: #1a1030; border-color: transparent;
+  filter: brightness(1.12) saturate(1.06);
   box-shadow: 0 12px 44px rgba(124,92,255,.6);
 }
 
@@ -640,6 +644,8 @@ body::after {
 @media (max-width: 640px) {
   .hv-rail, .hv-browse-grid, .hv-acc-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
   .hv-tiles { grid-template-columns: 1fr !important; }
+  /* grids de campos de formulario (datos, dirección, perfil, publicar) apilan */
+  .hv-2col { grid-template-columns: 1fr !important; }
   .hv-footer-grid { grid-template-columns: 1fr !important; gap: 30px !important; }
   .hv-sellcta { grid-template-columns: 1fr !important; padding: 30px 22px !important; }
 
@@ -672,6 +678,20 @@ body::after {
   .tcard.foil::after { animation: none; opacity: .3; }
   .prisma-wrap { animation: none; } /* skip only the fly-in entrance */
 }
+
+/* ============================================================
+   Performance: menos animaciones en loop infinito.
+   Los gradientes cromados quedan estáticos (igual lucen premium) y la
+   mascota Prisma se aliviana. El brillo holo de botones es solo on hover.
+   ============================================================ */
+.chrome-name, .platinum-text, .badge-holo, .rar-mythic, .chapter-num,
+.quest-tag, .prisma-name, .prisma-cta { animation: none !important; }
+/* Prisma: sin chispas/estelas (caras al GPU por box-shadow) y sin shimmer */
+.pf-spark, .pf-trail { display: none !important; }
+.prisma-sprite { animation: prismaWander 8s ease-in-out infinite !important; }
+/* el shimmer del foil solo corre al pasar el mouse, no en toda la grilla */
+.tcard.foil::after { animation: none; opacity: .35; }
+.loot:hover .tcard.foil::after, .tcard.foil:hover::after { animation: foilSweep 5s ease-in-out infinite; }
 
 /* ============================================================
    Admin panel — estética Final Fantasy (clases ff-*)

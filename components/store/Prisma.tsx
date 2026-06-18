@@ -15,6 +15,8 @@ export default function Prisma() {
   ];
   const [i, setI] = useState(0);
   const [open, setOpen] = useState(true);
+  // en mobile arranca colapsado (solo el sprite) para no tapar el contenido
+  useEffect(() => { if (typeof window !== "undefined" && window.innerWidth <= 640) setOpen(false); }, []);
   useEffect(() => {
     if (!open) return;
     const t = setInterval(() => setI((x) => (x + 1) % tips.length), 5200);
