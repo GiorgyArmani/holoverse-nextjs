@@ -84,7 +84,7 @@ function BrowseShell({ title, eyebrow, initial = {}, query }: any) {
         {Object.values(HV.GAMES).map((g: any) => <Check key={g.id} label={g.label} swatch={g.color} count={HV.all.filter((x) => x.game === g.id).length} checked={games.includes(g.id)} onChange={() => toggle(setGames, games)(g.id)} />)}
       </FilterGroup>
       <FilterGroup title="Tipo de producto">
-        {[["single", "Cartas sueltas"], ["sealed", "Producto sellado"], ["acc", "Accesorios"]].map(([id, l]) => <Check key={id} label={l} count={HV.all.filter((x) => x.type === id).length} checked={types.includes(id)} onChange={() => toggle(setTypes, types)(id)} />)}
+        {[["single", "Singles"], ["sealed", "Producto sellado"], ["acc", "Accesorios"]].map(([id, l]) => <Check key={id} label={l} count={HV.all.filter((x) => x.type === id).length} checked={types.includes(id)} onChange={() => toggle(setTypes, types)(id)} />)}
       </FilterGroup>
       <FilterGroup title="Rareza">
         {[["common", "Common"], ["uncommon", "Uncommon"], ["rare", "Rare"], ["mythic", "Mythic / Chase"]].map(([id, l]) => <Check key={id} label={l} checked={rarities.includes(id)} onChange={() => toggle(setRarities, rarities)(id)} />)}
@@ -169,7 +169,7 @@ export default function Browse(params) {
   if (params.game) { title = titleMap[params.game]; eyebrow = "Juego de cartas"; }
   else if (params.type === "sealed") { title = "Producto sellado y preventas"; eyebrow = "Cajas · ETBs · Bundles"; }
   else if (params.type === "acc") { title = "Accesorios y gear"; eyebrow = "Protegé tu colección"; }
-  else if (params.type === "single") { title = "Cartas sueltas"; eyebrow = "Chase · staples · comunes"; }
+  else if (params.type === "single") { title = "Singles"; eyebrow = "Chase · staples · comunes"; }
   return <BrowseShell title={title} eyebrow={eyebrow} initial={params} />;
 }
 
