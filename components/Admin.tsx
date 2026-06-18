@@ -8,6 +8,7 @@ import ProductsTab from "./admin/ProductsTab";
 import OrdersTab from "./admin/OrdersTab";
 import SubmissionsTab from "./admin/SubmissionsTab";
 import MarketplaceTab from "./admin/MarketplaceTab";
+import PayoutsTab from "./admin/PayoutsTab";
 import SettingsTab from "./admin/SettingsTab";
 
 const NAV = [
@@ -16,12 +17,14 @@ const NAV = [
   ["orders", "Pedidos", "✦"],
   ["subs", "Compras", "✧"],
   ["marketplace", "Marketplace", "◊"],
+  ["payouts", "Liquidaciones", "◇"],
   ["settings", "Configuración", "◆"],
 ];
 const TITLES: any = {
   dash: "Resumen del reino", products: "Inventario de la bóveda",
   orders: "Pedidos de la tienda", subs: "Compras a clientes",
-  marketplace: "Marketplace P2P · auditoría", settings: "Configuración",
+  marketplace: "Marketplace P2P · auditoría", payouts: "Liquidaciones a vendedores",
+  settings: "Configuración",
 };
 
 export default function AdminPanel({ adminName, dash }: { adminName: string; dash?: any }) {
@@ -72,6 +75,7 @@ export default function AdminPanel({ adminName, dash }: { adminName: string; das
         {tab === "orders" && <OrdersTab toast={showToast} />}
         {tab === "subs" && <SubmissionsTab toast={showToast} />}
         {tab === "marketplace" && <MarketplaceTab toast={showToast} />}
+        {tab === "payouts" && <PayoutsTab toast={showToast} />}
         {tab === "settings" && <SettingsTab toast={showToast} />}
       </main>
 

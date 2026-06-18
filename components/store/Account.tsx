@@ -8,6 +8,7 @@ import { Icon, Btn, Field, Price, QtyStepper } from "./ui";
 import { ItemArt } from "./art";
 import ProductCard from "./ProductCard";
 import SellCardSearch from "./SellCardSearch";
+import { notifyAdmin } from "../../lib/notify-admin";
 
 const ORDER_STATUS = {
   pending:    { label: "Pendiente",  color: "var(--gold)" },
@@ -372,6 +373,7 @@ function SellTab({ subs, onSubmitted }: any) {
     }));
     const { error: e2 } = await sb.from("sell_submission_items").insert(rows);
     if (e2) { showToast("Error guardando los items: " + e2.message); setBusy(false); return; }
+    notifyAdmin("sell_submission", { count: valid.reduce((n: number, it: any) => n + it.quantity, 0), payout });
     setItems([]); setNotes("");
     showToast("¡Lista enviada! Te respondemos con una oferta en 48h.");
     setBusy(false);
@@ -474,7 +476,9 @@ function ProfileEditor() {
   const { user, profile, nav, loadAccount, showToast } = useHV();
   const [f, setF] = useState({
     handle: profile?.handle || "", bio: profile?.bio || "", instagram: profile?.instagram || "",
-    avatar_url: profile?.avatar_url || "", banner_url: profile?.banner_url || "", profile_public: profile?.profile_public || false,
+    avatar_url: profile?.avatar_url || "", banner_url: profile?.banner_url || "",
+    // nuevos perfiles arrancan públicos para aparecer en el marketplace
+    profile_public: profile?.handle ? !!profile?.profile_public : true,
   });
   const [busy, setBusy] = useState(false);
   const set = (k: string, v: any) => setF((x) => ({ ...x, [k]: v }));
@@ -497,7 +501,7 @@ function ProfileEditor() {
     <div className="panel panel-pad">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, marginBottom: 16 }}>
         <h3 style={{ fontSize: 16 }}>Tu perfil de coleccionista</h3>
-        {profile?.handle && profile?.profile_public && <button className="btn btn-ghost btn-sm" onClick={() => nav("profile", { handle: profile.handle })}><Icon name="eye" size={14} />Ver perfil público</button>}
+        {profile?.handle && <button className="btn btn-ghost btn-sm" onClick={() => nav("profile", { handle: profile.handle })}><Icon name="eye" size={14} />Ver perfil público</button>}
       </div>
       {/* banner + avatar */}
       <div style={{ position: "relative", marginBottom: 54 }}>
@@ -537,11 +541,11 @@ function ListingComposer({ onCreated }: any) {
 
   const startFrom = (c: any) => setDraft({
     game: c.game, name: c.name, set_name: c.set_name || "", card_number: c.card_number || "", rarity: c.rarity || null,
-    is_foil: c.is_foil || false, condition: "NM", description: "", for_sale: false,
+    is_foil: c.is_foil || false, condition: "NM", description: "", for_sale: false, payout_method: "store_credit",
     price: c.usd != null ? String(c.usd) : "", marketUsd: c.usd ?? null,
     photos: c.image ? [c.image] : [], uploading: false,
   });
-  const startManual = () => setDraft({ game: "mtg", name: "", set_name: "", card_number: "", rarity: null, is_foil: false, condition: "NM", description: "", for_sale: false, price: "", marketUsd: null, photos: [], uploading: false });
+  const startManual = () => setDraft({ game: "mtg", name: "", set_name: "", card_number: "", rarity: null, is_foil: false, condition: "NM", description: "", for_sale: false, payout_method: "store_credit", price: "", marketUsd: null, photos: [], uploading: false });
   const set = (k: string, v: any) => setDraft((d: any) => ({ ...d, [k]: v }));
 
   const addPhotos = async (list: any) => {
@@ -562,10 +566,12 @@ function ListingComposer({ onCreated }: any) {
       card_number: draft.card_number || null, rarity: draft.rarity || null, is_foil: draft.is_foil,
       condition: draft.condition, description: draft.description || null, photo_urls: draft.photos.length ? draft.photos : null,
       for_sale: draft.for_sale, price_usd: draft.for_sale && draft.price !== "" ? Number(draft.price) : null,
+      payout_method: draft.payout_method || "store_credit",
       status: draft.for_sale ? "submitted" : "posted",
     });
     setBusy(false);
     if (error) { showToast("Error: " + error.message); return; }
+    if (draft.for_sale) notifyAdmin("marketplace_listing", { name: draft.name.trim(), price: draft.price });
     showToast(draft.for_sale ? "¡Listo! Enviá la carta a la oficina para auditarla." : "Agregada a tu binder ✦");
     setDraft(null); onCreated();
   };
@@ -626,8 +632,17 @@ function ListingComposer({ onCreated }: any) {
                 <input className="input" type="number" min="0" step="0.01" value={draft.price} onChange={(e) => set("price", e.target.value)} placeholder={draft.marketUsd != null ? String(draft.marketUsd) : "—"} style={{ width: 100 }} />
               </label>
             )}
+            {draft.for_sale && (
+              <label style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                <span className="muted" style={{ fontSize: 13 }}>Cobrar como</span>
+                <select className="input" value={draft.payout_method} onChange={(e) => set("payout_method", e.target.value)} style={{ width: "auto" }}>
+                  <option value="store_credit">Crédito en tienda (+10%)</option>
+                  <option value="cash">Efectivo</option>
+                </select>
+              </label>
+            )}
           </div>
-          {draft.for_sale && <p className="muted" style={{ fontSize: 12 }}>Comisión de Holoverse al vender: {HV.commissionPct}% · cobrás US$ {draft.price ? (Number(draft.price) * (1 - HV.commissionPct / 100)).toFixed(2) : "—"} neto.</p>}
+          {draft.for_sale && <p className="muted" style={{ fontSize: 12 }}>Comisión de Holoverse al vender: {HV.commissionPct}% · cobrás US$ {draft.price ? (Number(draft.price) * (1 - HV.commissionPct / 100)).toFixed(2) : "—"} neto{draft.payout_method === "store_credit" ? " (+10% de bonus si lo tomás como crédito)" : ""}.</p>}
 
           <div style={{ display: "flex", gap: 10 }}>
             <Btn variant="holo" disabled={busy} onClick={publish}>{busy ? "Publicando…" : draft.for_sale ? "Publicar a la venta" : "Agregar al binder"}<Icon name="arrow" size={15} /></Btn>
@@ -643,6 +658,7 @@ function SellerStoreTab() {
   const { user, profile, loadAccount, showToast } = useHV();
   const [mine, setMine] = useState<any>(null);
   const [wish, setWish] = useState<any>(null);
+  const [payouts, setPayouts] = useState<any>(null);
 
   const loadBinder = async () => {
     const { data } = await supabaseBrowser().from("collection_items").select("*").eq("owner_id", user.id).order("created_at", { ascending: false });
@@ -652,7 +668,11 @@ function SellerStoreTab() {
     const { data } = await supabaseBrowser().from("card_wishlist").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
     setWish(data || []);
   };
-  useEffect(() => { loadBinder(); loadWish(); }, []);
+  const loadPayouts = async () => {
+    const { data } = await supabaseBrowser().from("seller_payouts").select("*").eq("seller_id", user.id).order("created_at", { ascending: false });
+    setPayouts(data || []);
+  };
+  useEffect(() => { loadBinder(); loadWish(); loadPayouts(); }, []);
 
   const topIds: string[] = profile?.top_card_ids || [];
   const toggleTop = async (id: string) => {
@@ -713,6 +733,28 @@ function SellerStoreTab() {
             </div>
           )}
       </div>
+
+      {/* mis ventas / liquidaciones */}
+      {payouts && payouts.length > 0 && (
+        <div className="panel panel-pad">
+          <h3 style={{ fontSize: 16, marginBottom: 14 }}>Mis ventas</h3>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {payouts.map((p: any) => (
+              <div key={p.id} style={{ display: "flex", alignItems: "center", gap: 16, padding: "12px 0", borderBottom: "1px solid var(--border)", flexWrap: "wrap" }}>
+                <div style={{ flex: 1, minWidth: 150 }}>
+                  <div style={{ fontWeight: 600, fontFamily: "var(--font-display)", fontSize: 14 }}>{p.card_name || "Carta"}</div>
+                  <div className="muted" style={{ fontSize: 12.5, marginTop: 2 }}>{fmtDate(p.created_at)} · {p.method === "store_credit" ? "Crédito en tienda (+10%)" : "Efectivo"}</div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ fontWeight: 700, fontFamily: "var(--font-display)" }}>{HV.fmtUsd(Number(p.net_usd))} neto</div>
+                  <div className="muted" style={{ fontSize: 11.5 }}>de {HV.fmtUsd(Number(p.gross_usd))} · {p.commission_pct}% comisión</div>
+                </div>
+                <StatusBadge s={p.status === "paid" ? { label: "Pagada", color: "var(--good)" } : { label: "Pendiente", color: "var(--gold)" }} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* alertas de cartas (wishlist) */}
       <div className="panel panel-pad">

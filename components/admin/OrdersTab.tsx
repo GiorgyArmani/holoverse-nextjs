@@ -41,7 +41,7 @@ function OrderRow({ o, selfId, onChanged, toast }: any) {
       </div>
 
       <div className="muted" style={{ fontSize: 12.5, marginTop: 10, borderTop: "1px solid rgba(216,196,137,.15)", paddingTop: 10 }}>
-        {(o.order_items || []).map((oi: any) => `${oi.quantity}× ${oi.product_name}${oi.condition ? ` (${oi.condition})` : ""}`).join(" · ") || "Sin items"}
+        {(o.order_items || []).map((oi: any) => `${oi.quantity}× ${oi.product_name}${oi.condition ? ` (${oi.condition})` : ""}${oi.marketplace_listing_id ? " ◊ marketplace" : ""}`).join(" · ") || "Sin items"}
       </div>
 
       {open && (

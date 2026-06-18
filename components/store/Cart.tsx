@@ -41,9 +41,9 @@ function LineItem({ row, editable }: any) {
           {row.item.game && <GameTag game={row.item.game} withLabel={false} />}
           <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 14.5, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{row.item.name}</span>
         </div>
-        <div className="muted" style={{ fontSize: 12.5 }}>{row.item.set || row.item.cat}{row.condition && ` · ${row.condition}`}{row.item.preorder && " · Pre-order"}</div>
+        <div className="muted" style={{ fontSize: 12.5 }}>{row.item.collectionId ? `Marketplace${row.item.ownerHandle ? ` · @${row.item.ownerHandle}` : ""}` : (row.item.set || row.item.cat)}{row.condition && ` · ${row.condition}`}{row.item.preorder && " · Pre-order"}</div>
       </div>
-      {editable ? <QtyStepper value={row.qty} onChange={(q) => setQty(row.key, q)} /> : <span className="muted" style={{ fontSize: 13 }}>×{row.qty}</span>}
+      {editable && !row.item.collectionId ? <QtyStepper value={row.qty} onChange={(q) => setQty(row.key, q)} /> : <span className="muted" style={{ fontSize: 13 }}>×{row.qty}</span>}
       <div style={{ width: 120, textAlign: "right" }}><Price usd={price * row.qty} size={15} align="right" /></div>
       {editable && <button className="btn btn-icon btn-sm" onClick={() => removeFromCart(row.key)} style={{ background: "transparent", border: 0, color: "var(--text-3)" }}><Icon name="close" size={16} /></button>}
     </div>
@@ -116,7 +116,9 @@ export default function CartCheckout() {
   const placeOrder = async () => {
     setBusy(true);
     const sb = supabaseBrowser();
-    const items = cart.map((r) => ({ product_id: r.item.uuid, condition: r.condition || null, quantity: r.qty }));
+    const items = cart.map((r) => r.item.collectionId
+      ? { marketplace_listing_id: r.item.collectionId, quantity: 1 }
+      : { product_id: r.item.uuid, condition: r.condition || null, quantity: r.qty });
     const order = {
       delivery: method, payment_pref: pay,
       ship_name: buyerName.trim() || null,

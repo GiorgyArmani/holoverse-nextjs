@@ -431,14 +431,18 @@ img { display: block; max-width: 100%; }
 .sm-item { display: flex; align-items: baseline; gap: 16px; width: 100%; background: transparent; border: 0; padding: 5px 0; cursor: pointer; text-align: left; transform: translateY(120%); opacity: 0; transition: transform .7s cubic-bezier(.2,.7,.2,1), opacity .5s ease; }
 .sm-root.sm-open .sm-item { transform: translateY(0); opacity: 1; }
 .sm-num { font-family: ui-monospace, monospace; font-size: 13px; color: var(--violet); }
-.sm-label { font-family: var(--font-title); font-weight: 700; font-size: clamp(34px, 5vw, 54px); letter-spacing: -.02em; text-transform: uppercase; line-height: 1.06; color: var(--text); }
+.sm-label { font-family: var(--font-title); font-weight: 700; font-size: clamp(22px, 3.1vw, 40px); letter-spacing: -.02em; text-transform: uppercase; line-height: 1.06; color: var(--text); white-space: nowrap; }
 .sm-item:hover .sm-label { background: var(--purple-chrome); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; animation: holoShift 4s linear infinite; }
 .sm-socials { margin-top: auto; padding-top: 34px; }
 .sm-socials-title { font-family: var(--font-display); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--violet); margin-bottom: 14px; }
 .sm-socials-row { display: flex; gap: 22px; flex-wrap: wrap; }
 .sm-soc { font-size: 14px; color: var(--text-2); font-weight: 600; }
 .sm-soc:hover { color: var(--text); }
-@media (max-width: 640px) { .sm-prelayer, .sm-panel { width: 100%; } }
+@media (max-width: 820px) {
+  .sm-prelayer, .sm-panel { width: 100%; }
+  .sm-panel { padding: 100px 30px 40px; }
+  .sm-label { font-size: clamp(24px, 6.2vw, 36px); }
+}
 
 /* hamburger toggle in header */
 .hv-menu-toggle { display: inline-flex; align-items: center; gap: 9px; background: var(--surface-2); border: 1px solid var(--border); color: var(--text); padding: 9px 14px 9px 12px; border-radius: 11px; cursor: pointer; font-family: var(--font-display); font-weight: 600; font-size: 13px; transition: border-color .2s, background .2s; }

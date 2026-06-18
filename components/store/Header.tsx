@@ -41,7 +41,11 @@ function NotificationBell() {
       setItems((xs) => xs.map((n) => ({ ...n, read: true })));
     }
   };
-  const go = (n: any) => { setOpen(false); if (n.listing_id) nav("listing", { id: n.listing_id }); };
+  const go = (n: any) => {
+    setOpen(false);
+    if (n.kind && String(n.kind).startsWith("admin_")) { window.location.href = "/admin"; return; }
+    if (n.listing_id) nav("listing", { id: n.listing_id });
+  };
 
   return (
     <div style={{ position: "relative" }}>

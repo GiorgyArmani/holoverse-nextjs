@@ -60,12 +60,35 @@ export async function fetchListing(id: string) {
   return data ? itemFromCollection(data) : null;
 }
 
-/* perfil público por handle */
+/* perfil público por handle (vista segura); fallback al propio perfil aunque
+   sea privado, ya que el dueño sí puede leer su fila por RLS */
 export async function fetchProfileByHandle(handle: string) {
-  const { data } = await supabaseBrowser().from("profiles")
-    .select("id, handle, full_name, bio, avatar_url, banner_url, instagram, top_card_ids, profile_public")
+  const sb = supabaseBrowser();
+  const { data } = await sb.from("public_profiles").select("*").eq("handle", handle).maybeSingle();
+  if (data) return data;
+  const own = await sb.from("profiles")
+    .select("id, handle, full_name, bio, avatar_url, banner_url, instagram, top_card_ids")
     .eq("handle", handle).maybeSingle();
-  return data && data.profile_public ? data : null;
+  return own.data || null;
+}
+
+/* directorio de coleccionistas públicos, con un preview de su binder */
+export async function fetchCollectors() {
+  const sb = supabaseBrowser();
+  const [{ data: profiles }, { data: items }] = await Promise.all([
+    sb.from("public_profiles").select("*").order("created_at", { ascending: false }).limit(60),
+    sb.from("collection_items").select("owner_id, photo_urls, for_sale, status")
+      .or("and(for_sale.eq.true,status.eq.approved),and(for_sale.eq.false,status.eq.posted)")
+      .order("created_at", { ascending: false }),
+  ]);
+  const byOwner: any = {};
+  (items || []).forEach((it: any) => {
+    const o = (byOwner[it.owner_id] = byOwner[it.owner_id] || { count: 0, forSale: 0, thumbs: [] });
+    o.count++; if (it.for_sale) o.forSale++;
+    const t = (it.photo_urls || [])[0];
+    if (t && o.thumbs.length < 4) o.thumbs.push(t);
+  });
+  return (profiles || []).map((p: any) => ({ ...p, ...(byOwner[p.id] || { count: 0, forSale: 0, thumbs: [] }) }));
 }
 
 /* binder público de un dueño: showcase posteado + ventas aprobadas */
