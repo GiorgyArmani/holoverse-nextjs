@@ -22,7 +22,7 @@ const manrope = Manrope({
   display: "swap",
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://holoverse.com.ar";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.holoversetcg.store";
 const SITE_NAME = "Holoverse";
 const DESCRIPTION =
   "Tienda online de TCG en Banfield, Buenos Aires: singles chase, producto sellado y accesorios de Magic: The Gathering, Pokémon y One Piece. Envíos nacionales e internacionales y preventas abiertas.";

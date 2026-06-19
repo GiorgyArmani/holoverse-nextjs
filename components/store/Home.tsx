@@ -202,13 +202,13 @@ function SellCTA() {
       <div className="panel gloss hv-sellcta" style={{ position: "relative", overflow: "hidden", padding: "48px 44px", display: "grid", gridTemplateColumns: "1fr auto", gap: 30, alignItems: "center" }}>
         <div style={{ position: "absolute", inset: 0, background: "var(--holo-soft)", opacity: .6 }} />
         <div style={{ position: "relative" }}>
-          <div className="quest-tag" style={{ marginBottom: 14 }}><Icon name="spark" size={13} solid /> Misión secundaria</div>
-          <h2 style={{ fontSize: "clamp(24px, 3vw, 34px)", maxWidth: 560, marginBottom: 12 }}>Vendé tu colección a Holoverse y recibí crédito en tienda +10%.</h2>
-          <p className="muted" style={{ fontSize: 15, maxWidth: 520, lineHeight: 1.6 }}>Singles, sellado y slabs de los tres juegos. Cotización al instante, etiqueta de envío asegurada gratis, pago en 48 horas.</p>
+          <div className="quest-tag" style={{ marginBottom: 14 }}><Icon name="spark" size={13} solid /> Modo multijugador</div>
+          <h2 style={{ fontSize: "clamp(24px, 3vw, 34px)", maxWidth: 560, marginBottom: 12 }}>Creá tu cuenta y mostrale tu colección al Holoverse entero.</h2>
+          <p className="muted" style={{ fontSize: 15, maxWidth: 520, lineHeight: 1.6 }}>Armá tu perfil de coleccionista, exhibí tu binder y comprá o vendé cara a cara en el marketplace. Cada carta auditada, sellada y mediada por Holoverse.</p>
         </div>
         <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 10 }}>
-          <Btn variant="primary" size="lg" onClick={() => nav("account")}>Aceptar misión<Icon name="arrow" size={17} /></Btn>
-          <Btn variant="ghost" onClick={() => nav("browse")}>Ver recompensas</Btn>
+          <Btn variant="primary" size="lg" onClick={() => nav("account")}>Crear mi cuenta<Icon name="arrow" size={17} /></Btn>
+          <Btn variant="ghost" onClick={() => nav("marketplace")}>Explorar el marketplace</Btn>
         </div>
       </div>
     </section>

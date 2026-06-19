@@ -135,7 +135,7 @@ const C = {
   gold:    "#e6cd8f",
 };
 const SITE = () =>
-  (process.env.NEXT_PUBLIC_SITE_URL || "https://holoverse.com.ar").replace(/\/$/, "");
+  (process.env.NEXT_PUBLIC_SITE_URL || "https://www.holoversetcg.store").replace(/\/$/, "");
 
 /* wordmark + glow superior */
 function header() {
